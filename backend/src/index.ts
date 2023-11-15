@@ -1,6 +1,6 @@
 import express from "express";
 import "express-async-errors";
-import router from "./routes";
+import router from "./routes/route";
 import { errorHandler } from "./err/errorHandler";
 import cookieParser from "cookie-parser";
 import { json, urlencoded } from "body-parser";
