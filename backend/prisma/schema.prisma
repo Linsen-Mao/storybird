@@ -1,0 +1,70 @@
+// schema.prisma
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id       Int       @id @default(autoincrement())
+  username String    @unique
+  password String
+  email    String    @unique
+  profile  String?
+  stories  Story[]
+  comments Comment[]
+  likes    Favorite[]
+}
+
+model Story {
+  id          Int          @id @default(autoincrement())
+  authorId    Int
+  title       String
+  categoryId  Int
+  coverImage  String?
+  description String
+  author      User         @relation(fields: [authorId], references: [id])
+  images      StoryImage[]
+  comments    Comment[]
+  category    Category     @relation(fields: [categoryId], references: [id])
+  favorites   Favorite[]
+}
+
+model StoryImage {
+  id       Int    @id @default(autoincrement())
+  storyId  Int
+  imageFile String
+  caption  String?
+  order    Int
+  story    Story  @relation(fields: [storyId], references: [id])
+}
+
+model Comment {
+  id         Int      @id @default(autoincrement())
+  storyId    Int
+  commenterId Int
+  content    String
+  commentDate DateTime
+  story      Story    @relation(fields: [storyId], references: [id])
+  commenter  User     @relation(fields: [commenterId], references: [id])
+}
+
+model Category {
+  id          Int     @id @default(autoincrement())
+  name        String
+  description String?
+  stories     Story[]
+}
+
+model Favorite {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  storyId    Int
+  favoriteDate DateTime
+  user       User     @relation(fields: [userId], references: [id])
+  story      Story    @relation(fields: [storyId], references: [id])
+}
