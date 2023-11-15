@@ -26,7 +26,7 @@ model Story {
   coverImage  String?
   description String
   author      User         @relation(fields: [authorId], references: [id])
-  images      StoryImage[]
+  images      StoryImage[] 
   category    Category     @relation(fields: [categoryId], references: [id])
 }
 
@@ -36,7 +36,7 @@ model StoryImage {
   imageFile String
   caption  String?
   order    Int
-  story    Story  @relation(fields: [storyId], references: [id])
+  story    Story  @relation(fields: [id], references: [id])
 }
 
 model Category {
