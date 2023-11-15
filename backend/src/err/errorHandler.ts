@@ -24,11 +24,11 @@ export const errorHandler = (
   }
 
   let error = err;
-
+  // console.log(err);
   if (!(error instanceof AppError)) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       if (error.code === "P2002") {
-        error = new AppError("User with given ID already exists", 400);
+        error = new AppError("User with given email already exists", 400);
       } else if (error.code === "P2025") {
         error = new AppError("User not found", 404);
       } else {
