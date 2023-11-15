@@ -43,8 +43,6 @@ class UserController {
         email: true,
         profile: true,
         stories: true,
-        comments: true,
-        likes: true,
         password: false,
       },
     });
@@ -80,8 +78,6 @@ class UserController {
         email: true,
         profile: true,
         stories: true,
-        comments: true,
-        likes: true,
         password: false,
       },
     });
