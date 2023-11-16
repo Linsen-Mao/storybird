@@ -19,6 +19,11 @@ class CategoryController {
       .route("/")
       .post(verifyToken, this.createCategory)
       .get(this.getCategories);
+
+    this.router
+      .route("/:categoryId")
+      .patch(verifyToken, this.updateCategory)
+      .delete(verifyToken, this.deleteCategory);
   }
 
   getCategories = async (req: Request, res: Response): Promise<void> => {
@@ -44,6 +49,50 @@ class CategoryController {
     res.status(201).json({
       message: "Category created successfully",
       category: newCategory,
+    });
+  };
+
+  updateCategory = async (req: Request, res: Response): Promise<void> => {
+    const { categoryId } = req.params;
+    const { name, description } = req.body;
+
+    // 检查类别是否存在
+    const categoryExists = await this.prisma.category.findUnique({
+      where: { id: parseInt(categoryId) },
+    });
+    if (!categoryExists) {
+      throw new AppError("Category not found", 404);
+    }
+
+    // 执行更新操作
+    const updatedCategory = await this.prisma.category.update({
+      where: { id: parseInt(categoryId) },
+      data: { name, description },
+    });
+
+    res.status(200).json({
+      message: "Category updated successfully",
+      category: updatedCategory,
+    });
+  };
+
+  deleteCategory = async (req: Request, res: Response): Promise<void> => {
+    const { categoryId } = req.params;
+
+    const categoryExists = await this.prisma.category.findUnique({
+      where: { id: parseInt(categoryId) },
+    });
+    if (!categoryExists) {
+      throw new AppError("Category not found", 404);
+    }
+
+    // 执行删除操作
+    await this.prisma.category.delete({
+      where: { id: parseInt(categoryId) },
+    });
+
+    res.status(200).json({
+      message: "Category deleted successfully",
     });
   };
 }

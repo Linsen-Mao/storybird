@@ -20,7 +20,9 @@ export const verifyToken = (
   }
   try {
     const decoded = jwt.verify(token, JWT_SECRET_KEY) as jwt.JwtPayload;
-    if (decoded) {
+    if (decoded && decoded.id) {
+      // 将用户 ID 附加到请求对象
+      req.userId = decoded.id;
       next();
     } else {
       next(new AppError("token is invalid", 403));

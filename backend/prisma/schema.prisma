@@ -1,5 +1,3 @@
-// schema.prisma
-
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -15,17 +13,22 @@ model User {
   password String
   email    String    @unique
   profile  String?
-  stories  Story[]
+  createdStories  Story[] @relation("Creator")
+  writtenStories Story[] @relation("Writer")
+  writtenImages StoryImage[] @relation("ImageWriter")
+
 }
 
 model Story {
   id          Int          @id @default(autoincrement())
-  authorId    Int
+  creatorId   Int
+  writerId    Int?
   title       String
   categoryId  Int
   coverImage  String?
-  description String
-  author      User         @relation(fields: [authorId], references: [id])
+  description String?
+  creator     User         @relation(name: "Creator", fields: [creatorId], references: [id])
+  writer      User?        @relation(name: "Writer", fields: [writerId], references: [id])
   images      StoryImage[] 
   category    Category     @relation(fields: [categoryId], references: [id])
 }
@@ -33,10 +36,12 @@ model Story {
 model StoryImage {
   id       Int    @id @default(autoincrement())
   storyId  Int
+  writerId Int?   // 可以为空，因为初始时图片不包含说明文字
   imageFile String
-  caption  String?
+  caption  String? // 初始可以为空，直到writer添加
   order    Int
-  story    Story  @relation(fields: [id], references: [id])
+  story    Story  @relation(fields: [storyId], references: [id])
+  writer   User?  @relation(name: "ImageWriter", fields: [writerId], references: [id])
 }
 
 model Category {
