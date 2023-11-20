@@ -6,6 +6,7 @@ import { parsePaginationParams } from "../utils/pagination";
 import { QueryParams } from "../utils/params";
 import { userSchema } from "../utils/validation";
 import { verifyToken } from "../auth/auth";
+import { encryptPswd } from "../utils/encrypt";
 
 class UserController {
   private prisma: PrismaClient;
@@ -18,16 +19,15 @@ class UserController {
   }
 
   private initRoutes() {
-    this.router
-      .route("/")
-      .get(verifyToken, this.getUsers)
-      .post(verifyToken, this.createUser);
+    this.router.route("/").get(this.getUsers).post(this.createUser);
 
     this.router
       .route("/:id")
       .get(verifyToken, this.getUser)
       .patch(verifyToken, this.updateUser)
       .delete(verifyToken, this.deleteUser);
+
+    this.router.route("/:id/stories").get(verifyToken, this.getUserStories);
 
     this.router.route("/:id/stories").get(verifyToken, this.getUserStories);
   }
@@ -57,7 +57,7 @@ class UserController {
     if (error) {
       throw new AppError("Validation error: " + error.details[0].message, 400);
     }
-
+    newUser.password = await encryptPswd(newUser.password);
     const user = await this.prisma.user.create({ data: newUser });
     const { password, ...userWithoutPassword } = user;
     res.status(201).json({
@@ -75,7 +75,7 @@ class UserController {
     }
 
     const user = await this.prisma.user.findUnique({
-      where: { id: parsedUserId }, // 根据 id 查询
+      where: { id: parsedUserId },
       select: {
         id: true,
         username: true,
@@ -95,66 +95,65 @@ class UserController {
   };
 
   updateUser = async (req: Request, res: Response): Promise<void> => {
-    const { id } = req.params; // 使用 id 而不是 email
-    const { error, value: updateData } = userSchema.validate(req.body);
+    const { error, value: newUser } = userSchema.validate(req.body);
     if (error) {
-      throw new AppError("Validation error: " + error.details[0].message, 400);
+      throw new AppError("UserSchema Validation error", 400);
     }
+    const { email } = req.body;
 
-    const parsedUserId = parseInt(id);
-    if (isNaN(parsedUserId)) {
-      throw new AppError("Invalid user ID", 400);
+    if (newUser.password) {
+      newUser.password = await encryptPswd(newUser.password);
     }
-
-    await this.prisma.user.update({
-      where: { id: parsedUserId }, // 根据 id 更新
-      data: updateData,
+    const user = await this.prisma.user.update({
+      where: { email },
+      data: newUser,
     });
-    res.status(200).json({ message: "User updated successfully" });
+    const { password, ...userWithoutPassword } = user;
+    res.status(201).json({
+      message: "User updated successfully",
+      user: userWithoutPassword,
+    });
   };
 
   deleteUser = async (req: Request, res: Response): Promise<void> => {
-    const { id } = req.params; // 使用 id 而不是 email
+    const { id } = req.params;
 
     const parsedUserId = parseInt(id);
     if (isNaN(parsedUserId)) {
       throw new AppError("Invalid user ID", 400);
     }
 
-    await this.prisma.user.delete({ where: { id: parsedUserId } }); // 根据 id 删除
+    await this.prisma.user.delete({ where: { id: parsedUserId } });
     res.status(204).send();
   };
 
   getUserStories = async (req: Request, res: Response): Promise<void> => {
-    const { userID } = req.params;
+    const { id } = req.params;
+    console.log(id);
 
-    // 验证 userID 是否有效，这里假设 userID 是一个整数
-    const parsedUserId = parseInt(userID);
+    const parsedUserId = parseInt(id);
     if (isNaN(parsedUserId)) {
       throw new AppError("Invalid user ID", 400);
     }
 
-    // 获取该用户作为 creator 创建的所有故事
     const createdStories = await this.prisma.story.findMany({
       where: {
         creatorId: parsedUserId,
       },
       include: {
-        images: true, // 如果您还想包含相关的图片
+        images: true,
       },
     });
 
-    // 获取该用户作为 writer 参与的所有故事
     const writtenStories = await this.prisma.story.findMany({
       where: {
         writerId: parsedUserId,
       },
       include: {
-        images: true, // 如果您还想包含相关的图片
+        images: true,
       },
     });
 
-    // 返回结果
     res.json({
       createdStories,
       writtenStories,

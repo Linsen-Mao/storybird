@@ -56,7 +56,6 @@ class CategoryController {
     const { categoryId } = req.params;
     const { name, description } = req.body;
 
-    // 检查类别是否存在
     const categoryExists = await this.prisma.category.findUnique({
       where: { id: parseInt(categoryId) },
     });
@@ -64,7 +63,6 @@ class CategoryController {
       throw new AppError("Category not found", 404);
     }
 
-    // 执行更新操作
     const updatedCategory = await this.prisma.category.update({
       where: { id: parseInt(categoryId) },
       data: { name, description },
@@ -86,7 +84,6 @@ class CategoryController {
       throw new AppError("Category not found", 404);
     }
 
-    // 执行删除操作
     await this.prisma.category.delete({
       where: { id: parseInt(categoryId) },
     });

@@ -5,16 +5,15 @@ export const userSchema = Joi.object({
   password: Joi.string().required(),
   email: Joi.string().email().required(),
   profile: Joi.string().optional(),
-  stories: Joi.array().items(Joi.number().integer()).optional(),
 });
 
 export const storySchema = Joi.object({
-  title: Joi.string().required(),
-  categoryId: Joi.number().integer().required(),
+  title: Joi.string().optional(),
+  categoryId: Joi.number().integer().optional(),
   coverImage: Joi.string().optional(),
-  description: Joi.string().required(),
-  authorId: Joi.number().integer().required(),
-  images: Joi.array().items(Joi.number().integer()).optional(),
+  description: Joi.string().optional(),
+  creatorId: Joi.number().integer().optional(),
+  writerId: Joi.number().integer().optional(),
 });
 
 export const storyImageSchema = Joi.object({

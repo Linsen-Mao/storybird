@@ -28,12 +28,18 @@ class AuthController {
     if (error) {
       throw new AppError("UserSchema Validation error", 400);
     }
-    newUser.password = await encryptPswd(newUser.password);
+    const { email } = req.body;
 
-    const user = await this.prisma.user.create({ data: newUser });
+    if (newUser.password) {
+      newUser.password = await encryptPswd(newUser.password);
+    }
+    const user = await this.prisma.user.update({
+      where: { email },
+      data: newUser,
+    });
     const { password, ...userWithoutPassword } = user;
     res.status(201).json({
-      message: "User created successfully",
+      message: "User register successfully",
       user: userWithoutPassword,
     });
   };

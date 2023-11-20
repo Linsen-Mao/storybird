@@ -24,7 +24,7 @@ export const errorHandler = (
   }
 
   let error = err;
-  // console.log(err);
+  console.log(err);
   if (!(error instanceof AppError)) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       if (error.code === "P2002") {
