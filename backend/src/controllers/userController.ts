@@ -129,7 +129,6 @@ class UserController {
 
   getUserStories = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
-    console.log(id);
 
     const parsedUserId = parseInt(id);
     if (isNaN(parsedUserId)) {
