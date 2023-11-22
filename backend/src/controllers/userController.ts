@@ -136,6 +136,16 @@ class UserController {
       throw new AppError("Invalid user ID", 400);
     }
 
+    const user = await this.prisma.user.findUnique({
+      where: {
+        id: parsedUserId,
+      },
+    });
+
+    if (!user) {
+      throw new AppError("User not found", 403);
+    }
+
     const createdStories = await this.prisma.story.findMany({
       where: {
         creatorId: parsedUserId,
