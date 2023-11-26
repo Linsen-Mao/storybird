@@ -3,6 +3,22 @@ import { Request, Response, Router } from "express";
 import { AppError } from "../err/errorHandler";
 import "express-async-errors";
 import { verifyToken } from "../auth/auth";
+import multer from "multer";
+import path from "path";
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads/"); // Set the destination for file storage
+  },
+  filename: function (req, file, cb) {
+    cb(
+      null,
+      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
+    );
+  },
+});
+
+const upload = multer({ storage: storage });
 
 class StoryImageController {
   private prisma: PrismaClient;
@@ -15,20 +31,24 @@ class StoryImageController {
   }
 
   private initRoutes() {
-    this.router
-      .route("/")
-      .get(verifyToken, this.getStoryImages)
-      .post(verifyToken, this.addImageToStory);
+    this.router.route("/").get(verifyToken, this.getStoryImages);
+    this.router.post(
+      "/",
+      verifyToken,
+      upload.single("imageFile"),
+      this.addImageToStory
+    );
 
     this.router
       .route("/:imageID")
       .patch(verifyToken, this.updateImage)
-      .delete(verifyToken, this.deleteCaptiion);
+      .delete(verifyToken, this.deleteImage);
 
     this.router
       .route("/:imageID/captions")
       .post(verifyToken, this.addCaptionToImage)
-      .put(verifyToken, this.updateImageCaption);
+      .put(verifyToken, this.updateImageCaption)
+      .delete(verifyToken, this.deleteCaptiion);
   }
 
   getStoryImages = async (req: Request, res: Response): Promise<void> => {
@@ -65,7 +85,14 @@ class StoryImageController {
 
   addImageToStory = async (req: Request, res: Response): Promise<void> => {
     const { storyID } = req.params;
-    const { imageFile, order } = req.body;
+    const { order } = req.body;
+    const imageFile = req.file;
+
+    const parsedOrder = parseInt(order);
+
+    if (isNaN(parsedOrder)) {
+      throw new AppError("Invalid order", 400);
+    }
 
     const parsedStoryId = parseInt(storyID);
     if (isNaN(parsedStoryId)) {
@@ -87,11 +114,15 @@ class StoryImageController {
       throw new AppError("Unauthorized to add image to this story", 403);
     }
 
+    if (!imageFile) {
+      throw new AppError("No image file provided", 400);
+    }
+
     const newImage = await this.prisma.storyImage.create({
       data: {
         storyId: parsedStoryId,
-        imageFile,
-        order,
+        imageFile: imageFile.path, // Save the path to the file
+        order: parsedOrder,
         caption: "",
       },
     });
@@ -240,6 +271,22 @@ class StoryImageController {
     res.status(200).json({
       message: "Caption deleted successfully",
     });
+  };
+
+  deleteImage = async (req: Request, res: Response): Promise<void> => {
+    const { storyID, imageID } = req.params;
+    if (typeof req.userId !== "number") {
+      throw new AppError("User ID is undefined", 400);
+    }
+    // Validate the story and image
+    await this.validateStoryAndImage(storyID, imageID, req.userId);
+
+    // Perform the deletion
+    await this.prisma.storyImage.delete({
+      where: { id: parseInt(imageID) },
+    });
+
+    res.status(200).json({ message: "Image deleted successfully" });
   };
   private async validateStoryAndImage(
     storyID: string,

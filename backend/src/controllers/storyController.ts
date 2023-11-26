@@ -6,6 +6,22 @@ import { parsePaginationParams } from "../utils/pagination";
 import { QueryParams } from "../utils/params";
 import { verifyToken } from "../auth/auth";
 import { storySchema } from "../utils/validation";
+import multer from "multer";
+import path from "path";
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads/"); // Set the destination for file storage
+  },
+  filename: function (req, file, cb) {
+    cb(
+      null,
+      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
+    );
+  },
+});
+
+const upload = multer({ storage: storage });
 
 class StoryController {
   private prisma: PrismaClient;
@@ -21,13 +37,19 @@ class StoryController {
     this.router
       .route("/")
       .get(verifyToken, this.getStories)
-      .post(verifyToken, this.createStory);
+      .post(verifyToken, upload.single("coverImage"), this.createStory);
 
     this.router
       .route("/:storyID")
       .get(verifyToken, this.getStoryById)
       .patch(verifyToken, this.updateStoryById)
       .delete(verifyToken, this.deleteStoryById);
+
+    this.router.get(
+      "/categories/:categoryId",
+      verifyToken,
+      this.getStoriesByCategory
+    );
   }
 
   getStories = async (req: Request, res: Response): Promise<void> => {
@@ -76,6 +98,10 @@ class StoryController {
 
     if (!req.userId) {
       throw new AppError("Authentication required", 401);
+    }
+
+    if (req.file) {
+      newStoryData.coverImage = req.file.path;
     }
 
     const newStory = {
@@ -197,6 +223,48 @@ class StoryController {
 
     await this.prisma.story.delete({ where: { id: story.id } });
     res.status(204).send();
+  };
+
+  getStoriesByCategory = async (req: Request, res: Response): Promise<void> => {
+    const { categoryId } = req.params;
+    const parsedCategoryId = parseInt(categoryId);
+
+    if (isNaN(parsedCategoryId)) {
+      throw new AppError("Invalid category ID", 400);
+    }
+
+    const stories = await this.prisma.story.findMany({
+      where: { categoryId: parsedCategoryId },
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        coverImage: true,
+        creator: {
+          select: {
+            username: true,
+            email: true,
+            profile: true,
+          },
+        },
+        writer: {
+          select: {
+            username: true,
+            email: true,
+            profile: true,
+          },
+        },
+        images: true,
+        category: {
+          select: {
+            name: true,
+            description: true,
+          },
+        },
+      },
+    });
+
+    res.json({ stories });
   };
 }
 
