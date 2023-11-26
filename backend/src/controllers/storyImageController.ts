@@ -8,7 +8,7 @@ import path from "path";
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "uploads/"); // Set the destination for file storage
+    cb(null, "uploads/");
   },
   filename: function (req, file, cb) {
     cb(
@@ -121,7 +121,7 @@ class StoryImageController {
     const newImage = await this.prisma.storyImage.create({
       data: {
         storyId: parsedStoryId,
-        imageFile: imageFile.path, // Save the path to the file
+        imageFile: imageFile.path,
         order: parsedOrder,
         caption: "",
       },
@@ -136,7 +136,6 @@ class StoryImageController {
     const { storyID, imageID } = req.params;
     const { caption } = req.body;
 
-    // Validate the caption input
     if (!caption) {
       throw new AppError("Caption is required", 400);
     }
@@ -160,7 +159,6 @@ class StoryImageController {
   updateImage = async (req: Request, res: Response): Promise<void> => {
     const { storyID, imageID } = req.params;
     const { ...updateData } = req.body;
-    console.log(req.body);
     const parsedStoryId = parseInt(storyID);
     const parsedImageId = parseInt(imageID);
     if (isNaN(parsedStoryId) || isNaN(parsedImageId)) {
@@ -275,19 +273,43 @@ class StoryImageController {
 
   deleteImage = async (req: Request, res: Response): Promise<void> => {
     const { storyID, imageID } = req.params;
-    if (typeof req.userId !== "number") {
-      throw new AppError("User ID is undefined", 400);
-    }
-    // Validate the story and image
-    await this.validateStoryAndImage(storyID, imageID, req.userId);
 
-    // Perform the deletion
+    const parsedStoryId = parseInt(storyID);
+    const parsedImageId = parseInt(imageID);
+    if (isNaN(parsedStoryId) || isNaN(parsedImageId)) {
+      throw new AppError("Invalid story or image ID", 400);
+    }
+
+    const story = await this.prisma.story.findUnique({
+      where: { id: parsedStoryId },
+      select: {
+        creatorId: true,
+      },
+    });
+
+    if (!story) {
+      throw new AppError("Story not found", 404);
+    }
+
+    if (req.userId !== story.creatorId) {
+      throw new AppError("Unauthorized to delete this image", 403);
+    }
+
+    const imageExists = await this.prisma.storyImage.findUnique({
+      where: { id: parsedImageId },
+    });
+
+    if (!imageExists) {
+      throw new AppError("Image not found", 404);
+    }
+
     await this.prisma.storyImage.delete({
-      where: { id: parseInt(imageID) },
+      where: { id: parsedImageId },
     });
 
     res.status(200).json({ message: "Image deleted successfully" });
   };
+
   private async validateStoryAndImage(
     storyID: string,
     imageID: string,
@@ -310,6 +332,18 @@ class StoryImageController {
       throw new AppError("Story not found", 404);
     }
 
+    if (!story.writerId) {
+      await this.prisma.story.update({
+        where: { id: parsedStoryId },
+        data: { writerId: userId },
+      });
+
+      await this.prisma.storyImage.updateMany({
+        where: { storyId: parsedStoryId },
+        data: { writerId: userId },
+      });
+    }
+
     if (story.writerId !== userId) {
       throw new AppError("Unauthorized to modify this story", 403);
     }
@@ -318,6 +352,7 @@ class StoryImageController {
       where: {
         id: parsedImageId,
         storyId: parsedStoryId,
+        writerId: userId,
       },
     });
 
