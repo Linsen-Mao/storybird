@@ -67,15 +67,11 @@ class UserController {
   };
 
   getUser = async (req: Request, res: Response): Promise<void> => {
-    const { id } = req.params; // 使用 id 而不是 email
-
-    const parsedUserId = parseInt(id);
-    if (isNaN(parsedUserId)) {
-      throw new AppError("Invalid user ID", 400);
-    }
+    const userId = this.validateAndParseId(req.params.id);
+    await this.ensureUserExists(userId);
 
     const user = await this.prisma.user.findUnique({
-      where: { id: parsedUserId },
+      where: { id: userId },
       select: {
         id: true,
         username: true,
@@ -87,57 +83,48 @@ class UserController {
       },
     });
 
-    if (!user) {
-      throw new AppError("User not found", 404);
-    }
-
     res.json(user);
   };
 
   updateUser = async (req: Request, res: Response): Promise<void> => {
-    const { error, value: newUser } = userSchema.validate(req.body);
+    const userId = this.validateAndParseId(req.params.id);
+    await this.ensureUserExists(userId);
+
+    const { error, value: updatedUserData } = userSchema.validate(req.body);
     if (error) {
       throw new AppError("UserSchema Validation error", 400);
     }
-    const { email } = req.body;
 
-    if (newUser.password) {
-      newUser.password = await encryptPswd(newUser.password);
+    if (updatedUserData.password) {
+      updatedUserData.password = await encryptPswd(updatedUserData.password);
     }
-    const user = await this.prisma.user.update({
-      where: { email },
-      data: newUser,
+
+    const updatedUser = await this.prisma.user.update({
+      where: { id: userId },
+      data: updatedUserData,
     });
-    const { password, ...userWithoutPassword } = user;
-    res.status(201).json({
+    const { password, ...userWithoutPassword } = updatedUser;
+    res.status(200).json({
       message: "User updated successfully",
       user: userWithoutPassword,
     });
   };
 
   deleteUser = async (req: Request, res: Response): Promise<void> => {
-    const { id } = req.params;
+    const userId = this.validateAndParseId(req.params.id);
+    await this.ensureUserExists(userId);
 
-    const parsedUserId = parseInt(id);
-    if (isNaN(parsedUserId)) {
-      throw new AppError("Invalid user ID", 400);
-    }
-
-    await this.prisma.user.delete({ where: { id: parsedUserId } });
+    await this.prisma.user.delete({ where: { id: userId } });
     res.status(204).send();
   };
 
   getUserStories = async (req: Request, res: Response): Promise<void> => {
-    const { id } = req.params;
-
-    const parsedUserId = parseInt(id);
-    if (isNaN(parsedUserId)) {
-      throw new AppError("Invalid user ID", 400);
-    }
+    const userId = this.validateAndParseId(req.params.id);
+    await this.ensureUserExists(userId);
 
     const user = await this.prisma.user.findUnique({
       where: {
-        id: parsedUserId,
+        id: userId,
       },
     });
 
@@ -147,7 +134,7 @@ class UserController {
 
     const createdStories = await this.prisma.story.findMany({
       where: {
-        creatorId: parsedUserId,
+        creatorId: userId,
       },
       include: {
         images: true,
@@ -156,7 +143,7 @@ class UserController {
 
     const writtenStories = await this.prisma.story.findMany({
       where: {
-        writerId: parsedUserId,
+        writerId: userId,
       },
       include: {
         images: true,
@@ -168,6 +155,23 @@ class UserController {
       writtenStories,
     });
   };
+
+  private validateAndParseId(id: string): number {
+    const parsedId = parseInt(id);
+    if (isNaN(parsedId)) {
+      throw new AppError("Invalid ID", 400);
+    }
+    return parsedId;
+  }
+
+  private async ensureUserExists(userId: number): Promise<void> {
+    const userExists = await this.prisma.user.findUnique({
+      where: { id: userId },
+    });
+    if (!userExists) {
+      throw new AppError("User not found", 404);
+    }
+  }
 }
 
 export default UserController;

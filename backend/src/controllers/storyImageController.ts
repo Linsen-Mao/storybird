@@ -32,8 +32,7 @@ class StoryImageController {
   }
 
   getStoryImages = async (req: Request, res: Response): Promise<void> => {
-    // const { storyID } = req.params;
-    const { storyID } = req.body;
+    const { storyID } = req.params;
 
     const parsedStoryId = parseInt(storyID);
     if (isNaN(parsedStoryId)) {
@@ -65,8 +64,8 @@ class StoryImageController {
   };
 
   addImageToStory = async (req: Request, res: Response): Promise<void> => {
-    // const { storyID } = req.params;
-    const { storyID, imageFile, order } = req.body;
+    const { storyID } = req.params;
+    const { imageFile, order } = req.body;
 
     const parsedStoryId = parseInt(storyID);
     if (isNaN(parsedStoryId)) {
@@ -103,83 +102,33 @@ class StoryImageController {
   };
 
   addCaptionToImage = async (req: Request, res: Response): Promise<void> => {
-    const { imageID } = req.params;
-    const { storyID, caption } = req.body;
+    const { storyID, imageID } = req.params;
+    const { caption } = req.body;
 
     // Validate the caption input
     if (!caption) {
       throw new AppError("Caption is required", 400);
     }
 
-    // Ensure the storyID and imageID are valid numbers
-    const parsedStoryId = parseInt(storyID);
-    const parsedImageId = parseInt(imageID);
-    if (isNaN(parsedStoryId) || isNaN(parsedImageId)) {
-      throw new AppError("Invalid story or image ID", 400);
+    if (typeof req.userId !== "number") {
+      throw new AppError("User ID is undefined", 400);
     }
+    await this.validateStoryAndImage(storyID, imageID, req.userId);
 
-    // Fetch the story to check its current writerId
-    const story = await this.prisma.story.findUnique({
-      where: { id: parsedStoryId },
-      select: {
-        writerId: true,
-      },
+    const updatedImage = await this.prisma.storyImage.update({
+      where: { id: parseInt(imageID) },
+      data: { caption },
     });
 
-    if (!story) {
-      throw new AppError("Story not found", 404);
-    }
-
-    // If there's no writer, or the writer matches the current user, proceed
-    if (!story.writerId || story.writerId === req.userId) {
-      // Update the writerId for the story if it's not already set
-      if (!story.writerId) {
-        await this.prisma.story.update({
-          where: { id: parsedStoryId },
-          data: { writerId: req.userId },
-        });
-      }
-
-      // Fetch the image to check its current writerId
-      const image = await this.prisma.storyImage.findUnique({
-        where: { id: parsedImageId },
-      });
-
-      // If the image doesn't exist or doesn't belong to the story, throw an error
-      if (!image || image.storyId !== parsedStoryId) {
-        throw new AppError(
-          "Image not found or does not belong to the story",
-          404
-        );
-      }
-
-      // If there's no writer for the image, or the writer matches the current user, proceed
-      if (!image.writerId || image.writerId === req.userId) {
-        // Update the caption and writerId for the image
-        const updatedImage = await this.prisma.storyImage.update({
-          where: { id: parsedImageId },
-          data: {
-            caption,
-            writerId: req.userId,
-          },
-        });
-
-        res.status(200).json({
-          message: "Caption added successfully",
-          image: updatedImage,
-        });
-      } else {
-        throw new AppError("Unauthorized to add caption to this image", 403);
-      }
-    } else {
-      throw new AppError("Unauthorized to add caption to this image", 403);
-    }
+    res.status(200).json({
+      message: "Caption added successfully",
+      image: updatedImage,
+    });
   };
 
   updateImage = async (req: Request, res: Response): Promise<void> => {
-    // const { storyID, imageID } = req.params;
-    const { imageID } = req.params;
-    const { storyID, ...updateData } = req.body;
+    const { storyID, imageID } = req.params;
+    const { ...updateData } = req.body;
     console.log(req.body);
     const parsedStoryId = parseInt(storyID);
     const parsedImageId = parseInt(imageID);
@@ -226,46 +175,20 @@ class StoryImageController {
   };
 
   updateImageCaption = async (req: Request, res: Response): Promise<void> => {
-    // const { storyID, imageID } = req.params;
-    const { imageID } = req.params;
-    // const { caption } = req.body; /
-    const { storyID, caption } = req.body;
-    // 验证输入
+    const { storyID, imageID } = req.params;
+    const { caption } = req.body;
+
     if (!caption) {
       throw new AppError("Caption is required", 400);
     }
 
-    const parsedStoryId = parseInt(storyID);
-    const parsedImageId = parseInt(imageID);
-    if (isNaN(parsedStoryId) || isNaN(parsedImageId)) {
-      throw new AppError("Invalid story or image ID", 400);
+    if (typeof req.userId !== "number") {
+      throw new AppError("User ID is undefined", 400);
     }
-
-    const story = await this.prisma.story.findUnique({
-      where: { id: parsedStoryId },
-      select: {
-        writerId: true,
-      },
-    });
-    if (!story) {
-      throw new AppError("Story not found", 404);
-    }
-
-    const imageExists = await this.prisma.storyImage.findFirst({
-      where: {
-        id: parsedImageId,
-        storyId: parsedStoryId,
-      },
-    });
-    if (!imageExists) {
-      throw new AppError(
-        "Image not found or does not belong to the story",
-        404
-      );
-    }
+    await this.validateStoryAndImage(storyID, imageID, req.userId);
 
     const updatedImage = await this.prisma.storyImage.update({
-      where: { id: parsedImageId },
+      where: { id: parseInt(imageID) },
       data: { caption },
     });
 
@@ -318,6 +241,46 @@ class StoryImageController {
       message: "Caption deleted successfully",
     });
   };
+  private async validateStoryAndImage(
+    storyID: string,
+    imageID: string,
+    userId: number
+  ): Promise<void> {
+    const parsedStoryId = parseInt(storyID);
+    const parsedImageId = parseInt(imageID);
+    if (isNaN(parsedStoryId) || isNaN(parsedImageId)) {
+      throw new AppError("Invalid story or image ID", 400);
+    }
+
+    const story = await this.prisma.story.findUnique({
+      where: { id: parsedStoryId },
+      select: {
+        writerId: true,
+      },
+    });
+
+    if (!story) {
+      throw new AppError("Story not found", 404);
+    }
+
+    if (story.writerId !== userId) {
+      throw new AppError("Unauthorized to modify this story", 403);
+    }
+
+    const imageExists = await this.prisma.storyImage.findUnique({
+      where: {
+        id: parsedImageId,
+        storyId: parsedStoryId,
+      },
+    });
+
+    if (!imageExists) {
+      throw new AppError(
+        "Image not found or does not belong to the story",
+        404
+      );
+    }
+  }
 }
 
 export default StoryImageController;

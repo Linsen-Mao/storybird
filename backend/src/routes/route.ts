@@ -10,8 +10,7 @@ const router = Router();
 router.use("/users", userRouter);
 router.use("/", accountRouter);
 router.use("/stories", storyRouter);
-// router.use("/stories/:storyID/images", storyImageRouter);
-router.use("/images", storyImageRouter);
+router.use("/stories/:storyID/images", storyImageRouter);
 router.use("/categories", categoryRouter);
 
 export default router;
