@@ -1,8 +1,12 @@
 import { Request, Response, NextFunction } from "express";
-import jwt from "jsonwebtoken";
+import jwt, { SignOptions } from "jsonwebtoken";
+import { PrismaClient } from "@prisma/client";
 import { AppError } from "../err/errorHandler";
 import { handleAuthError } from "../err/authErr";
+import { comparePswd } from "../utils/encrypt";
 require("dotenv").config();
+
+const prisma = new PrismaClient();
 
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 if (!JWT_SECRET_KEY) {
@@ -29,4 +33,29 @@ export const verifyToken = (
   } catch (error) {
     handleAuthError(error, next);
   }
+};
+
+export const authenticateUser = async (
+  email: string,
+  password: string
+): Promise<string> => {
+  const user = await prisma.user.findFirst({ where: { email } });
+  if (!user) {
+    throw new AppError("Authentication failed.", 404);
+  }
+
+  const isPasswordValid: boolean = await comparePswd(password, user.password);
+  if (!isPasswordValid) {
+    throw new AppError("Authentication failed.", 401);
+  }
+
+  const tokenParams: object = {
+    id: user.id,
+    name: user.username,
+  };
+
+  const signOptions: SignOptions = {
+    expiresIn: process.env.JWT_EXPIRATION || "1d",
+  };
+  return jwt.sign(tokenParams, JWT_SECRET_KEY, signOptions);
 };
