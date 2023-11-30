@@ -65,6 +65,7 @@ class StoryImageController {
         id: true,
         imageFile: true,
         caption: true,
+        style: true,
         writer: {
           select: {
             id: true,
@@ -134,7 +135,7 @@ class StoryImageController {
 
   addCaptionToImage = async (req: Request, res: Response): Promise<void> => {
     const { storyID, imageID } = req.params;
-    const { caption } = req.body;
+    const { caption, style } = req.body;
 
     if (!caption) {
       throw new AppError("Caption is required", 400);
@@ -147,7 +148,7 @@ class StoryImageController {
 
     const updatedImage = await this.prisma.storyImage.update({
       where: { id: parseInt(imageID) },
-      data: { caption },
+      data: { caption, style },
     });
 
     res.status(200).json({
@@ -205,7 +206,7 @@ class StoryImageController {
 
   updateImageCaption = async (req: Request, res: Response): Promise<void> => {
     const { storyID, imageID } = req.params;
-    const { caption } = req.body;
+    const { caption, style } = req.body;
 
     if (!caption) {
       throw new AppError("Caption is required", 400);
@@ -218,7 +219,10 @@ class StoryImageController {
 
     const updatedImage = await this.prisma.storyImage.update({
       where: { id: parseInt(imageID) },
-      data: { caption },
+      data: {
+        caption,
+        style,
+      },
     });
 
     res.status(200).json({
