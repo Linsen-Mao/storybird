@@ -1,0 +1,33 @@
+/*** Image Gallery.css ***/
+#imageGallery {
+  padding: 50px 0; 
+}
+
+#imageGallery .container {
+  margin-top: 20px;
+}
+
+#imageGallery .mb-4 {
+  transition: transform 0.3s ease-in-out;
+}
+
+#imageGallery .mb-4:hover {
+  transform: scale(1.05);
+}
+
+#categorySelect {
+  padding: 8px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  transition: border-color 0.3s ease-in-out;
+}
+
+#categorySelect:hover {
+  border-color: #999;
+}
+
+/* ... 其他樣式 ... */

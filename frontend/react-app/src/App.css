@@ -1,0 +1,76 @@
+.App {
+  text-align: center;
+}
+
+.app-box{
+  display: flex;
+  /* flex-direction: row; */
+   align-items: stretch;
+  justify-content: center; 
+  height: 100vh;
+  background-color: #231F20;
+}
+.carousel-box {
+  flex: 1; /* 自動伸展，佔據剩餘的空間 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /*box-shadow: 5px 0 15px rgba(0, 0, 0, 0.2);  左側陰影效果 */
+}
+/* slide.js */
+.carousel-caption {
+  position: absolute;
+  bottom: 5%;
+  left: 15%;
+  transform: translateX(-50%);
+  padding: 20px;
+  width: 100%;
+  text-align: center;
+  color: #FAF7CA; /* 文字顏色，可以自行調整 */
+}
+.slides{
+  object-fit: contain;
+  width: 100%;
+  height: 100vh;
+}
+
+.signin-box {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  padding: 30px; 
+  height: 100vh;
+  width: 40%; 
+  background-color: rgba(0, 0, 0, 0.75); 
+  color: #FAF7CA;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+
+/* signin.js */
+.formButton{
+  background-color: #426b95 !important;
+}
+.formButton:hover {
+  color: #426b95 !important;
+  background-color: #FAF7CA !important;
+}
+.change-sign{
+  font-Size: 30px;
+  text-decoration-line: none; 
+  cursor: pointer; 
+  text-align: center;
+
+}
+
+.email-error{
+  color:rgb(203,8,8);
+  font-size: 15px;
+}

@@ -1,0 +1,23 @@
+/***Instructions Page***/
+#instruction {
+    padding: 50px 0;
+}
+
+#instruction .container {
+    margin-top: 20px;
+}
+
+#instruction .mb-4 {
+    transition: transform 0.3s ease-in-out;
+}
+
+#instruction .mb-4:hover {
+    transform: scale(1.05);
+}
+
+#instruction .font-size-large {
+    font-size: 18px; /* 調整文字大小 */
+}
+
+/* ... 其他樣式 ... */
+
