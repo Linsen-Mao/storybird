@@ -5,6 +5,7 @@ import Form from 'react-bootstrap/Form';
 import React from 'react';
 import {useState, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
+import Cookie from 'js-cookie';
 
 const Register = ({data}) => {
 
@@ -34,13 +35,16 @@ const Register = ({data}) => {
             });
             // 後端回傳資料
             const responData = await response.json();
+            const id = responData.user.id;
+            console.log(document.cookie);
+            document.cookie = 'jwt=' + responData.token;
             console.log(responData);
             console.log(email, password, username);
             // if (responData.message === 'User created successfully'){
             // return data to app.js
             data.setEmail(email);
             data.setPassword(password);
-            data.setUserID(responData.user.id);
+            data.setUserID(id);
             //
             handleLoading(false);
             navigate('/home');
@@ -126,6 +130,10 @@ const SignIn = ({data}) => {
             // 後端回傳資料
             const responData = await response.json();
             if (responData.message === 'Login successful'){
+                // data.setToken(responData.token)
+                // Cookie.set('jwt', responData.token, {expires: 7});
+                console.log(document.cookie);
+                document.cookie = 'jwt=' + responData.token;
                 // 傳回 function App中的useState Variables
                 data.setEmail(email);
                 data.setPassword(password);
@@ -144,6 +152,7 @@ const SignIn = ({data}) => {
             handleLoading(false);
             console.error('Error:', error.message);
         }
+        handleLoading(false);
       };
     
     return (

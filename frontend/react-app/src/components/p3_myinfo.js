@@ -9,14 +9,9 @@ function MyInfo({userInfo}) {
     // const [userData, setUserData] = useState(null);
     useEffect(() => {
         const fetchData = async () => {
-            const headers = {
-                Authorization: `Bearer ${token}`,
-            };
 
             fetch(`http://localhost:4000/users/${authUserID}`, {
-                method: 'GET',
-                headers: headers,
-              })
+                method: 'GET'})
                 .then(response => {
                   if (!response.ok) {
                     throw new Error(`${response.status}`);
