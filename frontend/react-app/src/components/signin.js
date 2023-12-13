@@ -5,33 +5,13 @@ import Form from 'react-bootstrap/Form';
 import React from 'react';
 import {useState, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
-const getUserName = ({data}) => {
-    let getNameURL = 'http://localhost:4000/users/:id?'
-    fetch(getNameURL)
-    .then(response => {
-        if (!response.ok) {
-        throw new Error('cannot response.');
-        }
-        // 將回應轉換成 JSON
-        return response.json();
-    })
-    .then(data => {
-        console.log('return data', data);
-        data.setAuthUserName(data);
-    })
-    .catch(error => {
-        // 處理錯誤
-        console.error('There was a problem with the fetch operation:', error.message);
-    });
-}
+
 const Register = ({data}) => {
 
     let registerURL = 'http://localhost:4000/users';
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [userName, setUserName] = useState('');
-    const [status, setStatus] = useState('');
-    const [message, setMessage] = useState('');
+    const [username, setUsername] = useState('');
     //// jump page
     const [loading, setLoading] = useState(false);
     const handleLoading = (newstate) => { setLoading(newstate); };
@@ -43,48 +23,43 @@ const Register = ({data}) => {
     const handleSubmit = async (e) => {
         e.preventDefault(); 
         handleLoading(true);
-        console.log(userName, email, password);
+        // console.log(username, email, password);
         try {
             const response = await fetch(registerURL, {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json', // 告訴後端是json形式
                 },
-                body: JSON.stringify({ userName, email, password }), // 前端傳給後端
+                body: JSON.stringify({ username, password, email, profile: "This is a user profile." }), // 前端傳給後端
             });
-
-            if (!response.ok) {
-                WrongCondition(true);
-                handleLoading(false);
-                throw new Error('Register failed');
-            }
-
             // 後端回傳資料
             const responData = await response.json();
+            console.log(responData);
+            console.log(email, password, username);
+            // if (responData.message === 'User created successfully'){
             // return data to app.js
-            data.Email(email);
-            data.Password(password);
-            data.UserName(userName);
-            // store backend data
-            setStatus(responData.status);
-            setMessage(responData.message);
-
+            data.setEmail(email);
+            data.setPassword(password);
+            
+            console.log(responData);
             //
             handleLoading(false);
             navigate('/home');
 
-            } catch (error) {
+        } catch (error) {
             WrongCondition(true);
+            handleLoading(false);
             console.error('Error:', error.message);
         }
+        handleLoading(false);
       };
 
     return (
         <Form onSubmit = {handleSubmit}>
-                <Form.Group className="mb-3" controlId="formBasicUserName">
+                <Form.Group className="mb-3" controlId="formBasicUsername">
                     <Form.Label>User Name</Form.Label>
                     <Form.Control type="text" placeholder="Enter user name" 
-                        value={userName} onChange={(e) => setUserName(e.target.value)}/>
+                        value={username} onChange={(e) => setUsername(e.target.value)}/>
                 </Form.Group>
                 <br/><br/>
 
@@ -128,8 +103,6 @@ const SignIn = ({data}) => {
     /// render variable
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [message, setMessage] = useState('');
-    const [token, setToken] = useState('');
     /// loading icon
     const [loading, setLoading] = useState(false);
     const handleLoading = (newstate) => { setLoading(newstate); };
@@ -151,36 +124,27 @@ const SignIn = ({data}) => {
                 body: JSON.stringify({ email, password }),
             });
 
-            if (!response.ok) {
-                WrongCondition(true);
-                handleLoading(false);
-                throw new Error('Login failed');
-            }
-
             // 後端回傳資料
             const responData = await response.json();
-            // 傳回 function App中的useState Variables
-            data.setEmail(email);
-            data.setPassword(password);
+            if (responData.message === 'Login successful'){
+                // 傳回 function App中的useState Variables
+                data.setEmail(email);
+                data.setPassword(password);
+                // getUsername(data.setUsername, data.setUserID);
 
-            getUserName({data});
-            // loading icon hide & warning word hide
-            handleLoading(false);
-            WrongCondition(false);
-            // store the backend data
-            setMessage(responData.message);
-            setToken(responData.token);
-            // route to home page
-            navigate('/home');
-            // 
-            console.log(responData.message);
-
-            } catch (error) {
-                WrongCondition(true);
+                // loading icon hide & warning word hide
                 handleLoading(false);
-                console.error('Error:', error.message);
+                WrongCondition(false);
+                // route to home page
+                navigate('/home');
+                // 
+            } 
+            
+        } catch (error) {
+            WrongCondition(true);
+            handleLoading(false);
+            console.error('Error:', error.message);
         }
-        handleLoading(false);
       };
     
     return (
@@ -222,22 +186,19 @@ const SignIn = ({data}) => {
 }
  // to change sign in or register
 function LogInPage({setData}) {
-    const [theme, setTheme] = useState('default'); 
-    const [loading, setLoading] = useState(false);
-    const handleLoading = (newstate) => { setLoading(newstate); };
-    let navigate = useNavigate();
-
+    const [theme, setTheme] = useState('signin'); 
     const handleThemeChange = (newTheme) => {
         setTheme(newTheme);
     };
     const setEmail = setData.setAuthEmail;
     const setPassword = setData.setAuthPassword;
-    const setUserName = setData.setAuthUserName;
+    const setUsername = setData.setAuthUsername;
+    const setUserID = setData.setAuthUserID;
     return (
         <div>
             {/* click and change */}
             <div className = "change-sign">
-                <span className = "signButton" style={{ cursor: 'pointer' }} onClick={() => handleThemeChange('default')}> SIGN IN </span>
+                <span className = "signButton" style={{ cursor: 'pointer' }} onClick={() => handleThemeChange('signin')}> SIGN IN </span>
                 <span style={{display: 'inline-block',width:'50px', verticalAlign: 'middle'}} > | </span>
                 <span className = "registerButton" style={{ cursor: 'pointer' }} onClick={() => handleThemeChange('register')}> REGISTER </span>
             </div>
@@ -245,10 +206,10 @@ function LogInPage({setData}) {
             <br/><br/>
             <div>
                 {theme === 'register' && (
-                    <Register data = {{setEmail, setPassword, setUserName}}/>
+                    <Register data = {{setEmail, setPassword, setUsername, setUserID}}/>
                 )}
-                {theme === 'default' && (
-                    <SignIn data = {{setEmail, setPassword, setUserName}}/>
+                {theme === 'signin' && (
+                    <SignIn data = {{setEmail, setPassword, setUsername, setUserID}}/>
                 )} 
             </div>
             

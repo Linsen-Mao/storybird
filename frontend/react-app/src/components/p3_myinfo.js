@@ -1,10 +1,49 @@
 // Myinfo.js
 import '../css/p3_myInfo.css';
 import MyGallery from './p3_1myGallery.js';
-import React from 'react';
+import React, { useEffect,useState } from 'react';
 
-function MyInfo() {
-    const myInfo = ['王小明', 'example@email.com', require('../img/monster04.png')];
+function MyInfo({userInfo}) {
+    const {authEmail, setAuthUserName, setAuthUserID, authUserName, authUserID} = userInfo;
+    const [userData, setUserData] = useState(null);
+    useEffect(() => {
+        const fetchData = async () => {
+          try {
+            
+            const response = await fetch(`http://localhost:4000/users/`);
+            const data = await response.json();
+            setUserData(data.users);
+            console.log(userData)
+            
+          } catch (error) {
+            console.error('Error fetching data:', error.message);
+          }
+        };
+        fetchData();
+    }, []); // when authEmail change, tragger useEffect
+    useEffect(() => {
+        
+        if (userData) {
+            console.log(userData);
+            console.log(authEmail);
+            const thisUser = userData.find(user => user.email === authEmail);
+            
+            if (thisUser) {
+                console.log(thisUser);
+                setAuthUserID(thisUser.id);
+                setAuthUserName(thisUser.username);
+            } 
+            else {
+                console.log('not found.');
+            }
+        }
+        else{
+            console.log('userData is null.')
+        }
+    }, [userData, authEmail]);
+
+
+    const myInfo = [authUserName, authEmail, require('../img/monster04.png')];
     return (
         <div id="myInfo" className="bg-light mt-5">
             <h1 className="featurette-heading text-center mb-4">我的資料</h1>

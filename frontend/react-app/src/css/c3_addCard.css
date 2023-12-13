@@ -12,6 +12,7 @@
 .addCard .card:hover {
     transform: scale(1.05);
     filter: grayscale(100%);
+    cursor: pointer;
 }
 
 .addCard .card-body {

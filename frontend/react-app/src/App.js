@@ -13,12 +13,15 @@ import Homepage from './components/p1_homepage.js';
 import ImageGallery from './components/p2_imageGallery.js';
 import Read from './components/p2_1read.js';
 import MyInfo from './components/p3_myinfo.js';
+import DesignList from './components/DesignList.js';
 
 //////////////////////////////////////////////
 function App() {
   const [authEmail, setAuthEmail] = useState(null);
   const [authPassword, setAuthPassword] = useState(null);
-  const [authUserName, setAuthUserName] = useState('Unknown');
+  const [authUserName, setAuthUserName] = useState(null);
+  const [authUserID, setAuthUserID] = useState(null);
+  // const []
   return (
     <div className="App">
       <Routes>
@@ -28,7 +31,7 @@ function App() {
                 <Slide />
               </div>
               <div className="signin-box" >
-                <LogInPage setData = {{setAuthEmail, setAuthPassword, setAuthUserName}} />
+                <LogInPage setData = {{setAuthEmail, setAuthPassword, setAuthUserName, setAuthUserID}} />
               </div>
             </div>
           } />
@@ -37,23 +40,27 @@ function App() {
               <Navbar />
               <Homepage />
             </div> } />
-          <Route path={'/imgGallery'} element={
+          <Route path="/imageGallery" element={
             <div>
               <Navbar />
               <ImageGallery />
             </div>} />
 
-          <Route path={'/read'} element={
+          <Route path="/read" element={
           <div>
             <Navbar />
             <Read />
           </div>} />
-          <Route path={'/myInfo'} element={
+          <Route path="/myInfo" element={
           <div>
             <Navbar />
-            <MyInfo userInfo = {{authEmail, authUserName}}/>
+            <MyInfo userInfo = {{authEmail, setAuthUserName, setAuthUserID, authUserName, authUserID}}/>
           </div>} />
-
+          <Route path= "editPage" element={
+          <div>
+            <Navbar />
+            <DesignList />
+          </div>} />  
       </Routes>  
     </div>
   

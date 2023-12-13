@@ -4,7 +4,8 @@ import ImageCard from './c2_imageCard';
 import AddNewItemCard from './c3_addCard';
 import React from 'react';
 
-function MyGallery() {
+function MyGallery({stories}) {
+    // stories to mywork
     const myWork = [
         {
             id: 1,
@@ -23,9 +24,12 @@ function MyGallery() {
                     <h2 className="card-title">我的作品</h2>
                     <div className='row row-cols-1 row-cols-md-3 row-cols-lg-4 g-3'>
                         <AddNewItemCard />
-                        {myWork.map((item) => (
+                        <span className='cards' >
+                           {myWork.map((item) => (
                             <ImageCard key={item.id} src={item.src} alt={item.alt} title={item.title} category={item.category} />
-                        ))}
+                            ))} 
+                        </span>
+                        
                     </div>
                     
                 </div>

@@ -2,7 +2,16 @@
 import '../css/c2_imageCard.css';
 import React from 'react';
 
-const ImageCard = ({ src, alt, title, category }) => {
+const ImageCard = ({ key, src, alt, title, category }) => {
+  // const editStory = () => {
+  //     let editStoryURL = ''
+  //     try {
+  //         const response = await fetch(editStoryURL)
+  //         const data = await response.json();
+  //         console.log(data)
+
+  //     } catch (err) {console.error(err.message);}
+  // }
   return (
     <div className="imageCard">
       <div className="card">
