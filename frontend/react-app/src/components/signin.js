@@ -124,6 +124,7 @@ const SignIn = ({data}) => {
                 headers: {
                 'Content-Type': 'application/json', // 告訴後端是json形式
                 },
+                credentials: 'include',
                 body: JSON.stringify({ email, password }),
             });
 
@@ -131,14 +132,14 @@ const SignIn = ({data}) => {
             const responData = await response.json();
             if (responData.message === 'Login successful'){
                 // data.setToken(responData.token)
-                // Cookie.set('jwt', responData.token, {expires: 7});
+                Cookie.set('jwt', responData.token, {expires: 7, path: '/'});
+
+                // document.cookie = 'jwt=' + responData.token;
                 console.log(document.cookie);
-                document.cookie = 'jwt=' + responData.token;
                 // 傳回 function App中的useState Variables
                 data.setEmail(email);
                 data.setPassword(password);
                 data.setUserID(responData.userId);
-                console.log(responData.userId);
                 // loading icon hide & warning word hide
                 handleLoading(false);
                 WrongCondition(false);

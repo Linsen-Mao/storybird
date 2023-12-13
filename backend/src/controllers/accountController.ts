@@ -36,8 +36,8 @@ class AuthController {
     }
 
     res.cookie("jwt", token, {
-      httpOnly: true,
-      secure: true,
+      httpOnly: false,
+      secure: false,
       sameSite: "strict",
     });
 
