@@ -21,6 +21,7 @@ function App() {
   const [authPassword, setAuthPassword] = useState(null);
   const [authUserName, setAuthUserName] = useState(null);
   const [authUserID, setAuthUserID] = useState(null);
+  const [token, setToken] = useState(null);
   // const []
   return (
     <div className="App">
@@ -31,7 +32,7 @@ function App() {
                 <Slide />
               </div>
               <div className="signin-box" >
-                <LogInPage setData = {{setAuthEmail, setAuthPassword, setAuthUserName, setAuthUserID}} />
+                <LogInPage setData = {{setAuthEmail, setAuthPassword, setAuthUserName, setAuthUserID, setToken}} />
               </div>
             </div>
           } />
@@ -54,7 +55,7 @@ function App() {
           <Route path="/myInfo" element={
           <div>
             <Navbar />
-            <MyInfo userInfo = {{authEmail, setAuthUserName, setAuthUserID, authUserName, authUserID}}/>
+            <MyInfo userInfo = {{authEmail, setAuthUserName, authUserName, authUserID, token}}/>
           </div>} />
           <Route path= "editPage" element={
           <div>

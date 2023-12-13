@@ -40,8 +40,7 @@ const Register = ({data}) => {
             // return data to app.js
             data.setEmail(email);
             data.setPassword(password);
-            
-            console.log(responData);
+            data.setUserID(responData.user.id);
             //
             handleLoading(false);
             navigate('/home');
@@ -130,8 +129,8 @@ const SignIn = ({data}) => {
                 // 傳回 function App中的useState Variables
                 data.setEmail(email);
                 data.setPassword(password);
-                // getUsername(data.setUsername, data.setUserID);
-
+                data.setUserID(responData.userId);
+                console.log(responData.userId);
                 // loading icon hide & warning word hide
                 handleLoading(false);
                 WrongCondition(false);
@@ -190,10 +189,12 @@ function LogInPage({setData}) {
     const handleThemeChange = (newTheme) => {
         setTheme(newTheme);
     };
+
     const setEmail = setData.setAuthEmail;
     const setPassword = setData.setAuthPassword;
-    const setUsername = setData.setAuthUsername;
     const setUserID = setData.setAuthUserID;
+    const setToken = setData.setToken;
+
     return (
         <div>
             {/* click and change */}
@@ -206,10 +207,10 @@ function LogInPage({setData}) {
             <br/><br/>
             <div>
                 {theme === 'register' && (
-                    <Register data = {{setEmail, setPassword, setUsername, setUserID}}/>
+                    <Register data = {{setEmail, setPassword, setUserID, setToken}}/>
                 )}
                 {theme === 'signin' && (
-                    <SignIn data = {{setEmail, setPassword, setUsername, setUserID}}/>
+                    <SignIn data = {{setEmail, setPassword, setUserID, setToken }}/>
                 )} 
             </div>
             

@@ -26,13 +26,22 @@ class AuthController {
 
     const token = await authenticateUser(email, password);
 
+    const user = await this.prisma.user.findUnique({
+      where: { email },
+      select: { id: true },
+    });
+
+    if (!user) {
+      throw new AppError("User not found", 404);
+    }
+
     res.cookie("jwt", token, {
       httpOnly: true,
       secure: true,
       sameSite: "strict",
     });
 
-    res.json({ message: "Login successful", token });
+    res.json({ message: "Login successful", token, userId: user.id });
   };
 
   logout = async (req: Request, res: Response): Promise<void> => {
