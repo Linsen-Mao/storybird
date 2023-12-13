@@ -26,9 +26,7 @@ function MyInfo({userInfo}) {
                   
                     console.log(data);
                     //
-                    const id = data.id;
                     const name = data.username;
-                    setAuthUserID(id);
                     setAuthUserName(name);
                 })
                 .catch(error => {
