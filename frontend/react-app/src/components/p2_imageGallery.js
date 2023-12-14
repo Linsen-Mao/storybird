@@ -1,29 +1,134 @@
-// ImageGallery.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import ImageCard from './c2_imageCard'; 
 import '../css/p2_imageGallery.css';
 
 const ImageGallery = () => {
-  const image_data = [
-    { category: 'Monster', src: require('../img/monster01.png'), alt: 'Monster Image 1' },
-    { category: 'Monster', src: require('../img/monster01.png'), alt: 'Monster Image 2' },
-    // Add more images with different categories
-    // ...
-    { category: 'School', src: require('../img/bg_school_room.jpg'), alt: 'School Image 1' },
-    { category: 'School', src: require('../img/bg_school_room.jpg'), alt: 'School Image 2' },
-  ];
+  const [selectedCategory, setSelectedCategory] = useState('All'); // 可以改為 const [selectedCategory, setSelectedCategory] = useState(0);
+  const [stories, setStories] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const categories = [...new Set(image_data.map((img) => img.category))];
-  const [selectedCategory, setSelectedCategory] = useState('All');
-
-  const handleCategoryChange = (category) => {
-    setSelectedCategory(category);
+  const fetchStories = async () => {
+    try {
+      const response = await fetch('http://localhost:4000/stories',{
+        method: 'GET',
+        credentials: 'include'
+      });
+      const data = await response.json();
+      // Validate the response structure
+      const stories = data && data.stories ? data.stories : [];
+      return stories;
+    } catch (error) {
+      console.error('Error fetching stories:', error);
+      return [];
+    }
+  };
+  
+  const fetchCategories = async () => {
+    try {
+      const response = await fetch('http://localhost:4000/categories', {
+        method: 'GET',
+        credentials: 'include'
+      });
+      const data = await response.json();
+      // Validate the response structure
+      const categories = data && data.categories ? data.categories : [];
+      return categories;
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+      return [];
+    }
   };
 
-  const filteredImages = image_data.filter(
-    (img) => selectedCategory === 'All' || img.category === selectedCategory
-  );
+  const fetchCateStories = async (categoryId) => {
+    try {
+      const response = await fetch(`http://localhost:4000/stories/categories/${categoryId}`, {
+        method: 'GET',
+        credentials: 'include'
+      });
+      const data = await response.json();
+      // Validate the response structure
+      const stories = data && data.stories ? data.stories : [];
+      return stories;
+    } catch (error) {
+      console.error('Error fetching stories:', error);
+      return [];
+    }
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        let storiesData = [];
+        const categoriesData = await fetchCategories();
+        if (selectedCategory === 'All') {
+          storiesData = await fetchStories();
+        } else {
+          const selectedCategoryObject = categoriesData.find(category => category.id === selectedCategory);
+          const categoryId = selectedCategoryObject ? selectedCategoryObject.id : '';
+          storiesData = await fetchCateStories(categoryId);
+        }
+        setStories(storiesData);
+        setCategories(categoriesData);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [selectedCategory]);
+  
+  const handleCategoryChange = (categoryId) => {
+    setSelectedCategory(categoryId);
+  };
+
+  const renderImages = () => {
+    const filteredData = selectedCategory === 'All'
+    ? stories.reduce((result, story) => ({
+        images: result.images.concat(story.coverImage),
+        ids: result.ids.concat(story.id),
+        title: result.title.concat(story.title),
+        categories: result.categories.concat(story.category ? story.category.name : ''),
+      }), { images: [], ids: [] , title: [], categories: []})
+    : stories
+        .filter((story) => story.category && story.category.name === selectedCategory)
+        .reduce((result, story) => ({
+            images: result.images.concat(story.coverImage),
+            ids: result.ids.concat(story.id),
+            title: result.title.concat(story.title),
+            categories: result.categories.concat(story.category ? story.category.name : ''),
+        }), { images: [], ids: [] , title: [], categories: []});
+    
+    const filteredImages = filteredData.images;
+    const filteredIDs = filteredData.ids;
+    const filteredTitles = filteredData.title;
+    const filteredCategories = filteredData.categories;
+    if (loading) {
+      return <p>Loading...</p>;
+    }
+
+    if (filteredImages.length === 0) {
+      return <p>No images found.</p>;
+    }
+
+    return (
+      <div className="row row-cols-2 row-cols-md-4 row-cols-lg-5 g-3">
+        {filteredImages.map((img, imgIndex) => (
+        <div key={imgIndex} className="col">
+          <Link to={`/read/${filteredIDs[imgIndex]}`} className="navbar-brand">
+            <ImageCard
+              src={`http://localhost:4000/${img}`}
+              alt={filteredIDs[imgIndex]}
+              title={filteredTitles[imgIndex]}
+              category={filteredCategories[imgIndex]}
+            />
+          </Link>
+        </div>
+      ))}
+      </div>
+    );
+  };
 
   return (
     <div id="imageGallery" className="mt-5 container">
@@ -38,24 +143,15 @@ const ImageGallery = () => {
         >
           <option value="All">全部</option>
           {categories.map((category, index) => (
-            <option key={index} value={category}>
-              {category}
+            <option key={index} value={category.id}>
+              {category.name}
             </option>
           ))}
         </select>
       </div>
 
       <div className="image-list container">
-        <div className="row row-cols-2 row-cols-md-4 row-cols-lg-5 g-3">
-          {filteredImages.map((img, imgIndex) => (
-            // Add Link to ImageCard 
-            <div key={imgIndex} className="col">
-              <Link to={'/read'} className="navbar-brand">
-              <ImageCard src={img.src} alt={img.alt} title={img.alt} category={img.category} />
-              </Link>
-            </div>
-          ))}
-        </div>
+        {renderImages()}
       </div>
     </div>
   );

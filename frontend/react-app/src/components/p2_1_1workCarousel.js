@@ -1,4 +1,6 @@
 // WorkCarousel.js
+
+// 需串接API
 import '../css/p2_1_1workCarousel.css';
 import React from 'react';
 
