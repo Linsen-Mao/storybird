@@ -5,8 +5,6 @@ import Form from 'react-bootstrap/Form';
 import React from 'react';
 import {useState, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
-import Cookie from 'js-cookie';
-
 const Register = ({data}) => {
 
     let registerURL = 'http://localhost:4000/users';
@@ -24,30 +22,23 @@ const Register = ({data}) => {
     const handleSubmit = async (e) => {
         e.preventDefault(); 
         handleLoading(true);
-        // console.log(username, email, password);
         try {
             const response = await fetch(registerURL, {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json', // 告訴後端是json形式
                 },
+                credentials: 'include',
                 body: JSON.stringify({ username, password, email, profile: "This is a user profile." }), // 前端傳給後端
             });
             // 後端回傳資料
             const responData = await response.json();
-            const id = responData.user.id;
-            console.log(document.cookie);
-            document.cookie = 'jwt=' + responData.token;
             console.log(responData);
-            console.log(email, password, username);
-            // if (responData.message === 'User created successfully'){
-            // return data to app.js
-            data.setEmail(email);
-            data.setPassword(password);
-            data.setUserID(id);
-            //
+            if (responData.message === 'User created successfully'){
+                data.setTheme('signin');
+                navigate('/');
+            }
             handleLoading(false);
-            navigate('/home');
 
         } catch (error) {
             WrongCondition(true);
@@ -58,7 +49,9 @@ const Register = ({data}) => {
       };
 
     return (
-        <Form onSubmit = {handleSubmit}>
+        <div>
+            <h4 className = "register-head"> Please sign in after register.</h4> <br></br>
+            <Form onSubmit = {handleSubmit}>
                 <Form.Group className="mb-3" controlId="formBasicUsername">
                     <Form.Label>User Name</Form.Label>
                     <Form.Control type="text" placeholder="Enter user name" 
@@ -97,7 +90,9 @@ const Register = ({data}) => {
                         Submit
                     </Button>
                     )}
-        </Form>  
+            </Form>  
+        </div>
+        
     );
 }
 const SignIn = ({data}) => {
@@ -131,10 +126,7 @@ const SignIn = ({data}) => {
             // 後端回傳資料
             const responData = await response.json();
             if (responData.message === 'Login successful'){
-                // data.setToken(responData.token)
                 const t =  responData.token;
-                // document.cookie = 'jwt=' + responData.token;
-                console.log(document.cookie);
                 // 傳回 function App中的useState Variables
                 data.setEmail(email);
                 data.setPassword(password);
@@ -217,7 +209,7 @@ function LogInPage({setData}) {
             <br/><br/>
             <div>
                 {theme === 'register' && (
-                    <Register data = {{setEmail, setPassword, setUserID, setToken}}/>
+                    <Register data = {{setEmail, setPassword, setUserID, setToken , setTheme}}/>
                 )}
                 {theme === 'signin' && (
                     <SignIn data = {{setEmail, setPassword, setUserID, setToken }}/>
