@@ -1,0 +1,40 @@
+.createStoryDiv {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+}
+
+.coverImg {
+    height: 300px;
+    width: 300px;
+    border-radius: 50%;
+}
+
+.inputDiv {
+    display: flex;
+    flex-direction: column;
+    margin-left: 50px;
+}
+
+#inputTitle, #inputDescription {
+    margin: 5px 0px;
+}
+
+
+button {
+    margin-top: 10px;
+    margin-left: auto;
+    border-radius: 5px;
+    border: 1px solid grey;
+    background-color: #dedbd7;
+}
+
+button:hover {
+    background-color: #c3bfbc;
+}
+
+button:active {
+    background-color: #ada9a7;
+}

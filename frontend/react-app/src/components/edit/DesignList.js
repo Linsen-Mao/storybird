@@ -5,17 +5,14 @@ import './DesignList.css'
 const DesignList = (props) => {
 
     // Initial slide passed by prop
-    const { startData } = props;
-
-    //const [slideList, setSlideList] = useState(initialSlides);
+    const { startData, writer } = props;
 
     // Save Button Click
     const designComponentsRef = useRef([]); // Ref to store Design component references
 
-    //const [dataList, setDataList] = useState([]);
-    var dataList = [];
+    //var dataList = [];
 
-    const handleDesignData = (designId, designData) => {
+    /*const handleDesignData = (designId, designData) => {
         // TODO: process received data -> send data to backend (JSON file list)
         console.log("received data from id " + designId + ": " + designData);
 
@@ -23,48 +20,45 @@ const DesignList = (props) => {
         //setDataList(prevDataList => [...prevDataList, designData]);
         console.log("--------------");
         console.log(dataList);
-    }
+    }*/
 
     // Function to trigger sending data from all Design components
-    const sendAllDesignDataToParent = () => {
+    /*const sendAllDesignDataToParent = () => {
         designComponentsRef.current.forEach(designRef => {
         designRef.sendDataToParent();
         });
         console.log("SEND");
         console.log(dataList);
+        dataList = [];
         //const jsonData = JSON.stringify(dataList)
         //console.log(jsonData);
         //dataList = [];
         //setDataList([]);
-    };
+    };*/
 
 
     const prepareStartData = () => {
       let initialSlide = [];
 
-      const fontFamilyList = ["'Times New Roman', Times, serif", "Georgia, serif", "Garamond, serif", "Arial, Helvetica, sans-serif" ,"Tahoma, Verdana, sans-serif", "'Trebuchet MS', Helvetica, sans-serif", "Geneva, Verdana, sans-serif", "'Courier New', Courier, monospace", "'Brush Script MT', cursive", "Copperplate, Papyrus, fantasy"];
-
       startData.forEach(element => {
-
-        const font = fontFamilyList[element.font];
-        const size = element.size+"px";
-
         const newSlide = 
         {
-          id: element.padeId,
+          id: element.id,
           slide: <Design 
-                  key={element.pageId} 
-                  id={element.pageId} 
-                  sendDataToParent={handleDesignData}
+                  key={element.id} 
+                  id={element.id} 
+                  /*sendDataToParent={handleDesignData}
                   ref={el => {
                       designComponentsRef.current[1] = el; // Store Design component references
-                    }}
-                  textLeft={element.textLeft} 
-                  textRight={element.textRight} 
-                  fontFamily={font} 
-                  size={size} 
-                  color={element.color}
-                  style={element.style}/>
+                    }}*/
+                  imageFile={element.imageFile}
+                  caption={element.caption} 
+                  fontFamily={element.style[0]} 
+                  size={element.style[1]} 
+                  color={element.style[2]}
+                  style={element.style[3]}
+                  editText={writer}
+                  />
         }
 
         initialSlide = initialSlide.concat(newSlide);
@@ -99,16 +93,17 @@ const DesignList = (props) => {
             slide: <Design 
                     key={""+newID} 
                     id={""+newID} 
-                    sendDataToParent={handleDesignData}
+                    /*sendDataToParent={handleDesignData}
                     ref={el => {
                         designComponentsRef.current[newID] = el; 
-                      }}
-                    textLeft={""} 
-                    textRight={""} 
+                      }}*/
+                    imageFile="https://uxwing.com/wp-content/themes/uxwing/download/video-photography-multimedia/upload-image-icon.png"
+                    caption="" 
                     fontFamily="Arial, Helvetica, sans-serif" 
                     size="16px" 
                     color="#000000"
-                    style="img text"/>}
+                    style="img text"
+                    editText={writer}/>}
 
         const newSlideList = [...slideList, newSlide];
         setSlideList(newSlideList);
@@ -134,23 +129,15 @@ const DesignList = (props) => {
                     <div className="divContainer">
                       <div className="space"/>
                       <button className="slideBtn" onClick={showNextSlide}>&gt;</button>
-                      <div className="space"/>
+                      <div className="space">
+                       <button className="addSlideBtn" onClick={addSlide}>+</button>
+                      </div>
                     </div>
                     
             </div>
 
             <div className="foot">
-              <div className="boxPageNumber">
-                <label className="pageNumber">{currentSlideIndex+1}/{slideList.length}</label>
-              </div>
-                
-              <div className="boxBtnRight">
-                <button className="btnRight" onClick={addSlide}>+</button>
-                <button className="btnRight" onClick={sendAllDesignDataToParent}>save</button>
-                <div className="space2"/>
-              </div>
-  
-              
+              <label className="pageNumber">{currentSlideIndex+1}/{slideList.length}</label>
             </div>
             
         </div>

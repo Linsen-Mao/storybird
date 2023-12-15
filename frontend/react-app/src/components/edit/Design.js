@@ -3,12 +3,17 @@ import './Design.css';
 
 const Design = forwardRef((props, ref) => {
 
-    const { id, textLeft, textRight, fontFamily, size, color, style, sendDataToParent } = props; 
+    //editText = boolean, True->edit text/disable upload img, False->upload img/diable edit text
+    const { id, imageFile, caption, fontFamily, size, color, style, /*sendDataToParent,*/ editText} = props; 
 
-    const [selectedColor, setSelectedColor] = useState(color); // Initial color: black
+    const [selectedColor, setSelectedColor] = useState(color);
 
     const handleColorChange = (e) => {
         setSelectedColor(e.target.value);
+
+        const elementID = parseInt(id) -1
+        const isSaved = document.getElementsByClassName('isSaved')[elementID];
+        isSaved.style.backgroundColor = "rgb(71, 113, 115)";
     };
 
     const [selectedFontFamily, setSelectedFontFamily] = useState(fontFamily);
@@ -27,6 +32,10 @@ const Design = forwardRef((props, ref) => {
             case "Copperplate": setSelectedFontFamily("Copperplate, Papyrus, fantasy");break;
             default: setSelectedFontFamily("Arial, Helvetica, sans-serif");
         }
+
+        const elementID = parseInt(id) -1
+        const isSaved = document.getElementsByClassName('isSaved')[elementID];
+        isSaved.style.backgroundColor = "rgb(71, 113, 115)";
     }
 
     const [selectedSize, setSelectedSize] = useState(size);
@@ -34,6 +43,10 @@ const Design = forwardRef((props, ref) => {
     const handleSizeChange = (event) => {
         const fontSize = event.target.value + "px"
         setSelectedSize(fontSize);
+
+        const elementID = parseInt(id) -1
+        const isSaved = document.getElementsByClassName('isSaved')[elementID];
+        isSaved.style.backgroundColor = "rgb(71, 113, 115)";
     }
 
 
@@ -61,6 +74,9 @@ const Design = forwardRef((props, ref) => {
                 document.getElementsByClassName("imgContainerRight")[elementID].style.display = "flex";
                 break;
         }
+
+        const isSaved = document.getElementsByClassName('isSaved')[elementID];
+        isSaved.style.backgroundColor = "rgb(71, 113, 115)";
     }
 
     // set select-tag option at first render
@@ -76,22 +92,69 @@ const Design = forwardRef((props, ref) => {
             selectStyle.value = selectedOptionValue;
             selectStyle.dispatchEvent(new Event('change', { bubbles: true }));
         }
+
+        if(!editText) {
+            const elementID = parseInt(id) - 1;
+
+            const selectFont = document.getElementsByClassName('selectFont')[elementID];
+            selectFont.disabled = true;
+
+            const selectSize = document.getElementsByClassName('selectSize')[elementID];
+            selectSize.disabled = true;
+
+            const selectColor = document.getElementsByClassName('selectColor')[elementID];
+            selectColor.disabled = true;
+
+            const textLeft = document.getElementsByClassName('textInputLeft')[elementID];
+            textLeft.readOnly = true;
+
+            const textRight = document.getElementsByClassName('textInputRight')[elementID];
+            textRight.readOnly = true;
+
+            const imgLeft = document.getElementsByClassName('inputFileLeft')[elementID];
+            imgLeft.disabled = false;
+
+            const imgRight = document.getElementsByClassName('inputFileRight')[elementID];
+            imgRight.disabled = false;
+        } 
+        else {
+            const elementID = parseInt(id) - 1;
+
+            const selectFont = document.getElementsByClassName('selectFont')[elementID];
+            selectFont.disabled = false;
+
+            const selectSize = document.getElementsByClassName('selectSize')[elementID];
+            selectSize.disabled = false;
+
+            const selectColor = document.getElementsByClassName('selectColor')[elementID];
+            selectColor.disabled = false;
+
+            const textLeft = document.getElementsByClassName('textInputLeft')[elementID];
+            textLeft.readOnly = false;
+
+            const textRight = document.getElementsByClassName('textInputRight')[elementID];
+            textRight.readOnly = false;
+
+            const imgLeft = document.getElementsByClassName('inputFileLeft')[elementID];
+            imgLeft.disabled = true;
+
+            const imgRight = document.getElementsByClassName('inputFileRight')[elementID];
+            imgRight.disabled = true;
+        }
       }, []);
+
 
     // TextArea
 
-    //update value of textArea on the left side
-    const [textValueLeft, setTextValueLeft] = useState(textLeft);
+    //update value of textArea
+    const [captionValue, setCaptionValue] = useState(caption);
 
-    const handleInputChangeLeft = (event) => {
-        setTextValueLeft(event.target.value);
-    };
+    const handleInputChange = (event) => {
+        setCaptionValue(event.target.value);
 
-    //update value of textArea on the right side
-    const [textValueRight, setTextValueRight] = useState(textRight);
-
-    const handleInputChangeRight = (event) => {
-        setTextValueRight(event.target.value);
+        const elementID = parseInt(id) -1
+        const isSaved = document.getElementsByClassName('isSaved')[elementID];
+        isSaved.style.backgroundColor = "rgb(71, 113, 115)";
     };
     
     const handleFocus = (event) => {
@@ -102,97 +165,93 @@ const Design = forwardRef((props, ref) => {
         event.target.style.outline = "dashed 0.5px grey";
         
         //if you want the outline if the textarea to disappear, once somethig is written into the textarea
-        /*if(event.target.value === "") {
+        if(event.target.value === "") {
             event.target.style.outline = "dashed 0.5px grey";
         } else {
             event.target.style.outline = "none";
-        }*/      
+        }      
     }
 
 
     // Upload Images
-    const inputRefLeft = useRef(null);
-    const inputRefRight = useRef(null);
+    const inputRef = useRef(null);
 
-    const [imageLeft, setImageLeft] = useState("");
-    const [imageRight, setImageRight] = useState("");
+    const [image, setImage] = useState(imageFile);
 
-    const handleImageLeftClick = () => {
-        inputRefLeft.current.click();
+    const handleImageClick = () => {
+        inputRef.current.click();
     }
 
-    const handleImageRightClick = () => {
-        inputRefRight.current.click();
-    }
+    const handleImageChange = (event) => {
+        const selectedFile = event.target.files[0];
+        const reader = new FileReader();
+    
+        reader.onloadend = () => {
+          setImage(reader.result); // Set the image in state to display on the frontend
+        };
+    
+        if (selectedFile) {
+          reader.readAsDataURL(selectedFile); // Convert the file to a data URL
+        }
 
-    const handleImageLeftChange = (event) => {
-        console.log(event.target.files[0]);
-        setImageLeft(event.target.files[0]);
-    }
+        const elementID = parseInt(id) -1
+        const isSaved = document.getElementsByClassName('isSaved')[elementID];
+        isSaved.style.backgroundColor = "rgb(71, 113, 115)";
+    };
 
-    const handleImageRightChange = (event) => {
-        console.log(event.target.files[0]);
-        setImageRight(event.target.files[0])
-    }
-
+      
 
 
     // send data to parent  
-
-    const prepareData = () => {
-
-        // prepare fontfamily data
-        const fontFamilyList = ["'Times New Roman', Times, serif", "Georgia, serif", "Garamond, serif", "Arial, Helvetica, sans-serif" ,"Tahoma, Verdana, sans-serif", "'Trebuchet MS', Helvetica, sans-serif", "Geneva, Verdana, sans-serif", "'Courier New', Courier, monospace", "'Brush Script MT', cursive", "Copperplate, Papyrus, fantasy"]
-
-        const prepareFontData = {}; //object
-        fontFamilyList.forEach((font, index) => {
-            prepareFontData[font] = index;
-        });
-
-        const fontData = prepareFontData[selectedFontFamily];
-        console.log("font: " + fontData)
-
-        // prepare style data
-        const styleList = ["text text", "text img", "img text", "img img"]
-
-        const prepareStyleData = {};
-        styleList.forEach((style, index) => {
-            prepareStyleData[style] = index;
-        });
-
-        const elementID = parseInt(id) - 1
-        const styleDescription = document.getElementsByClassName("selectStyle")[elementID];
-        const styleData = styleDescription? 0 : prepareStyleData[styleDescription];
-        console.log("style: " + styleData);
+    /*const prepareData = () => {
+        const elementID = parseInt(id) -1
+        const selectStyle= document.getElementsByClassName('selectStyle')[elementID].value;
 
         // create data
         const data = {
-            pageId: id, //number
-            style: styleData, //number
-            font: fontData, //number
-            size: parseInt(selectedSize), //number
-            color: selectedColor, //text (hex number)
-            textLeft: textValueLeft, //text
-            textRight: textValueRight, //text
-            imageLeft: imageLeft, //image file
-            imageRight: imageRight //image file
+            "id": id, 
+            "imagefile": image,
+            "caption": captionValue,
+            "style": [selectedFontFamily, selectedSize, selectedColor, selectStyle]
         }
    
-        //const jsonData = JSON.stringify(data)
-        //return jsonData;
-        return data;
-    }
+        const jsonData = JSON.stringify(data)
+        return jsonData;
+    }*/
 
-    const sendDesignDataToParent = () => {
+    /*const sendDesignDataToParent = () => {
         const data = prepareData();
         sendDataToParent(id, data);
-    }
+    }*/
 
     // Expose function to send data to the parent using ref
-    useImperativeHandle(ref, () => ({
+    /*useImperativeHandle(ref, () => ({
         sendDataToParent: sendDesignDataToParent,
-    }));
+    }));*/
 
+
+
+    const saveData = () => {
+        const elementID = parseInt(id) -1
+        const selectStyle= document.getElementsByClassName('selectStyle')[elementID].value;
+
+        // create data
+        const data = {
+            "id": id, 
+            "imagefile": image,
+            "caption": captionValue,
+            "style": [selectedFontFamily, selectedSize, selectedColor, selectStyle]
+        }
+   
+        const jsonData = JSON.stringify(data)
+        console.log(jsonData);
+        //TODO: send data to backend
+
+
+        const isSaved = document.getElementsByClassName('isSaved')[elementID];
+        isSaved.style.backgroundColor = "rgb(128, 204, 207)";
+        return jsonData;
+    }
 
 
     return(
@@ -251,6 +310,8 @@ const Design = forwardRef((props, ref) => {
                     value={selectedColor}
                     onChange={handleColorChange}
                 />
+                <div className='isSaved'/>
+                <button className="saveBtn" onClick={saveData}>save</button>
 
             </div>
 
@@ -259,20 +320,21 @@ const Design = forwardRef((props, ref) => {
                 <div className='contentLeft'>
                     <textarea
                         className="textarea textInputLeft"
-                        value={textValueLeft}
+                        value={captionValue}
                         onFocus={handleFocus}
                         onBlur={handleBlur}
-                        onChange={handleInputChangeLeft}
+                        onChange={handleInputChange}
                         placeholder="Type here..."
                         style={{color: selectedColor, fontSize: selectedSize, fontFamily: selectedFontFamily}}
                     />
 
-                    <div className="imgContainer imgContainerLeft" onClick={handleImageLeftClick}>
-                        {imageLeft ? <img className="uploadPictureLeft" src={URL.createObjectURL(imageLeft)}/> : <img className="uploadPictureLeft" src="https://uxwing.com/wp-content/themes/uxwing/download/video-photography-multimedia/upload-image-icon.png"/>}
+                    <div className="imgContainer imgContainerLeft" onClick={handleImageClick}>
+                        {<img className="uploadPictureLeft" src={image}/>}
                         <input
                             type="file"
-                            ref={inputRefLeft}
-                            onChange={handleImageLeftChange}
+                            className='inputFileLeft'
+                            ref={inputRef}
+                            onChange={handleImageChange}
                             style={{ display: "none"}}
                         />
                     </div>
@@ -281,34 +343,32 @@ const Design = forwardRef((props, ref) => {
             
                 <div className='contentRight'>
                     <textarea
+                        readOnly
                         className="textarea textInputRight"
-                        value={textValueRight}
+                        value={captionValue}
                         onFocus={handleFocus}
                         onBlur={handleBlur}
-                        onChange={handleInputChangeRight}
+                        onChange={handleInputChange}
                         placeholder="Type here..."
                         style={{color: selectedColor, fontSize: selectedSize, fontFamily: selectedFontFamily}}
                     />
 
                     
-                    <div className="imgContainer imgContainerRight" onClick={handleImageRightClick}>
-                        {imageRight ? <img className="uploadPictureRight" onClick={handleImageRightClick} src={URL.createObjectURL(imageRight)}/> : <img className="uploadPictureRight" src="https://uxwing.com/wp-content/themes/uxwing/download/video-photography-multimedia/upload-image-icon.png"/>}
+                    <div className="imgContainer imgContainerRight" onClick={handleImageClick}>
+
+                        <img className="uploadPictureRight" src={image}/>
                         <input
                             type="file"
-                            ref={inputRefRight}
-                            onChange={handleImageRightChange}
+                            className='inputFileRight'
+                            ref={inputRef}
+                            onChange={handleImageChange}
                             style={{ display: "none"}}
                         />
                     </div>
                 </div>
 
                 
-
             </div>
-
-            {/*<p>size: {selectedSize}</p>
-            <p>fontFamily: {selectedFontFamily}</p>
-    <p>color: {selectedColor}</p>*/}
         </div>
         
         

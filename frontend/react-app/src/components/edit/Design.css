@@ -1,0 +1,164 @@
+.style {
+    background-color:rgb(128, 204, 207);   
+    height: 7%;
+    width: 100%;
+    border: 1px solid grey;
+    border-bottom: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+select {
+    border-radius: 5px;
+    font-size: 16px;
+    border: 0.5 solid grey;
+    margin: 3px;
+}
+
+.selectColor {
+    padding: 2px;
+    margin: 3px;
+}
+
+.isSaved {
+    width: 10px; 
+    height: 10px; 
+    border-radius: 50%; 
+    background-color: rgb(71, 113, 115); 
+    border: 1px solid rgb(38, 60, 61);
+    margin-left:auto;
+}
+
+.saveBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid grey;
+    border-radius: 5px;
+    font-size: 16px;
+    margin: 5px;
+    background-color: #dedbd7;
+}
+
+.saveBtn:hover {
+    background-color: #c3bfbc;
+}
+
+.saveBtn:active {
+    background-color: #ada9a7;
+}
+
+.timesNewRoman {
+    font-family: "Times New Roman", Times, serif;
+}
+.georgia {
+    font-family: Georgia, serif;
+}
+.garamond {
+    font-family: Garamond, serif;
+}
+.arial {
+    font-family: Arial, Helvetica, sans-serif;
+}
+.tahoma {
+    font-family: Tahoma, Verdana, sans-serif;
+}
+.trebuchetMS {
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+}
+.geneva {
+    font-family: Geneva, Verdana, sans-serif;
+}
+.courierNew {
+    font-family: "Courier New", Courier, monospace;
+}
+.brushScriptMT {
+    font-family: "Brush Script MT", cursive;
+}
+.copperplate {
+    font-family: Copperplate, Papyrus, fantasy;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.containerDesign {
+    /*background-color: blueviolet;*/
+    height: 100%;
+    width: 100%;
+}
+
+.design {
+    background-color: white;
+    border: 1px solid grey;
+    height: 93%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.contentLeft {
+    height: 90%;
+    width: 45%;
+    margin-left: 3%;
+    margin-right: 2%;
+    /*background-color: red;*/
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.contentRight {
+    height: 90%;
+    width: 45%;
+    margin-left: 2%;
+    margin-right: 3%;
+    /*background-color: orange;*/
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.imgContainer {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.uploadPictureLeft {
+    max-height: 100%;
+    max-width: 100%;
+}
+
+.uploadPictureRight {
+    max-height: 100%;
+    max-width: 100%;
+}
+
+.textarea {
+    max-height: 100%;
+    max-width: 100%;
+    height: 100%;
+    width: 100%;
+    resize: none;
+    border: none;
+    outline: dashed 0.5px grey; 
+    display: block;
+    padding: 20px;
+}
