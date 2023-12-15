@@ -18,6 +18,7 @@ export const verifyToken = (
   res: Response,
   next: NextFunction
 ) => {
+  console.log(req.cookies.jwt);
   const token = req.cookies.jwt;
   if (!token) {
     return next(new AppError("No token provided", 401));

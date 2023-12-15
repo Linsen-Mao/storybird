@@ -5,86 +5,60 @@ import Form from 'react-bootstrap/Form';
 import React from 'react';
 import {useState, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
-const getUserName = ({data}) => {
-    let getNameURL = 'http://localhost:4000/users/:id?'
-    fetch(getNameURL)
-    .then(response => {
-        if (!response.ok) {
-        throw new Error('cannot response.');
-        }
-        // 將回應轉換成 JSON
-        return response.json();
-    })
-    .then(data => {
-        console.log('return data', data);
-        data.setAuthUserName(data);
-    })
-    .catch(error => {
-        // 處理錯誤
-        console.error('There was a problem with the fetch operation:', error.message);
-    });
-}
+
 const Register = ({data}) => {
 
     let registerURL = 'http://localhost:4000/users';
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [userName, setUserName] = useState('');
-    const [status, setStatus] = useState('');
-    const [message, setMessage] = useState('');
+    const [username, setUsername] = useState('');
     //// jump page
     const [loading, setLoading] = useState(false);
     const handleLoading = (newstate) => { setLoading(newstate); };
     let navigate = useNavigate();
-    /// worng situation from login
+    /// wrong situation from login
     const [check, setCheck] = useState(false);
     const WrongCondition = (newstate) => { setCheck(newstate); };
-
+    ///
     const handleSubmit = async (e) => {
         e.preventDefault(); 
         handleLoading(true);
-        console.log(userName, email, password);
         try {
             const response = await fetch(registerURL, {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json', // 告訴後端是json形式
                 },
-                body: JSON.stringify({ userName, email, password }), // 前端傳給後端
+                credentials: 'include',
+                body: JSON.stringify({ username, password, email, profile: "This is a user profile." }), // 前端傳給後端
             });
-
-            if (!response.ok) {
-                WrongCondition(true);
-                handleLoading(false);
-                throw new Error('Register failed');
-            }
-
             // 後端回傳資料
             const responData = await response.json();
-            // return data to app.js
-            data.Email(email);
-            data.Password(password);
-            data.UserName(userName);
-            // store backend data
-            setStatus(responData.status);
-            setMessage(responData.message);
+            console.log(responData);
+            if (responData.message === 'User created successfully'){
+                data.setTheme('signin');
+                navigate('/');
+            }
+            else{WrongCondition(true);}
 
-            //
             handleLoading(false);
-            navigate('/home');
 
-            } catch (error) {
+        } catch (error) {
             WrongCondition(true);
+            handleLoading(false);
             console.error('Error:', error.message);
         }
+        handleLoading(false);
       };
 
     return (
-        <Form onSubmit = {handleSubmit}>
-                <Form.Group className="mb-3" controlId="formBasicUserName">
+        <div>
+            <h4 className = "register-head"> Please sign in after register.</h4> <br></br>
+            <Form onSubmit = {handleSubmit}>
+                <Form.Group className="mb-3" controlId="formBasicUsername">
                     <Form.Label>User Name</Form.Label>
                     <Form.Control type="text" placeholder="Enter user name" 
-                        value={userName} onChange={(e) => setUserName(e.target.value)}/>
+                        value={username} onChange={(e) => setUsername(e.target.value)}/>
                 </Form.Group>
                 <br/><br/>
 
@@ -104,7 +78,7 @@ const Register = ({data}) => {
                 <br/><br/>
                 
                 {loading ? (
-                    <Button id="loading" variant="outline-light" disabled className="formButton">
+                    <Button id="loading" variant="light" disabled className="formButton">
                         <Spinner
                         as="span"
                         animation="border"
@@ -115,11 +89,13 @@ const Register = ({data}) => {
                         Loading...
                     </Button>
                     ) : (
-                    <Button id="submitButton" variant="outline-light" type="submit" className="formButton" >
+                    <Button id="submitButton" variant="light" type="submit" className="formButton">
                         Submit
                     </Button>
                     )}
-        </Form>  
+            </Form>  
+        </div>
+        
     );
 }
 const SignIn = ({data}) => {
@@ -128,12 +104,10 @@ const SignIn = ({data}) => {
     /// render variable
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [message, setMessage] = useState('');
-    const [token, setToken] = useState('');
     /// loading icon
     const [loading, setLoading] = useState(false);
     const handleLoading = (newstate) => { setLoading(newstate); };
-    /// worng situation from login
+    /// wrong situation from login
     const [check, setCheck] = useState(false);
     const WrongCondition = (newstate) => { setCheck(newstate); };
     /// jump page
@@ -148,37 +122,35 @@ const SignIn = ({data}) => {
                 headers: {
                 'Content-Type': 'application/json', // 告訴後端是json形式
                 },
+                credentials: 'include',
                 body: JSON.stringify({ email, password }),
             });
 
-            if (!response.ok) {
-                WrongCondition(true);
-                handleLoading(false);
-                throw new Error('Login failed');
-            }
-
             // 後端回傳資料
             const responData = await response.json();
-            // 傳回 function App中的useState Variables
-            data.setEmail(email);
-            data.setPassword(password);
-
-            getUserName({data});
-            // loading icon hide & warning word hide
-            handleLoading(false);
-            WrongCondition(false);
-            // store the backend data
-            setMessage(responData.message);
-            setToken(responData.token);
-            // route to home page
-            navigate('/home');
-            // 
-            console.log(responData.message);
-
-            } catch (error) {
+            if (responData.message === 'Login successful'){
+                const t =  responData.token;
+                // 傳回 function App中的useState Variables
+                data.setEmail(email);
+                data.setPassword(password);
+                data.setUserID(responData.userId);
+                data.setToken(t);
+                // loading icon hide & warning word hide
+                handleLoading(false);
+                WrongCondition(false);
+                // route to home page
+                navigate('/home');
+                // 
+            } 
+            else{
                 WrongCondition(true);
                 handleLoading(false);
-                console.error('Error:', error.message);
+            }
+            
+        } catch (error) {
+            WrongCondition(true);
+            handleLoading(false);
+            console.error('Error:', error.message);
         }
         handleLoading(false);
       };
@@ -197,10 +169,11 @@ const SignIn = ({data}) => {
                         value={password} onChange={(e) => setPassword(e.target.value)}/>
 
                 </Form.Group>
-                {check ? (<Form.Label disabled className="email-error" > wrong email or wrong password. </Form.Label>) : (<Form.Label></Form.Label>)}
+                <br></br>
+                {check ? ( <Form.Label disabled className="email-error" > wrong email or wrong password. </Form.Label>) : (<Form.Label></Form.Label>)}
                 <br/><br/>
                 {loading ? (
-                    <Button id="loading" variant="outline-light" disabled className="formButton">
+                    <Button id="loading" variant="light" disabled className="formButton">
                         <Spinner
                         as="span"
                         animation="border"
@@ -211,7 +184,7 @@ const SignIn = ({data}) => {
                         Loading...
                     </Button>
                     ) : (
-                    <Button id="submitButton" variant="outline-light" type="submit" className="formButton" >
+                    <Button id="submitButton" variant="light" type="submit" className="formButton" >
                         Submit
                     </Button>
                     )}
@@ -222,22 +195,21 @@ const SignIn = ({data}) => {
 }
  // to change sign in or register
 function LogInPage({setData}) {
-    const [theme, setTheme] = useState('default'); 
-    const [loading, setLoading] = useState(false);
-    const handleLoading = (newstate) => { setLoading(newstate); };
-    let navigate = useNavigate();
-
+    const [theme, setTheme] = useState('signin'); 
     const handleThemeChange = (newTheme) => {
         setTheme(newTheme);
     };
+
     const setEmail = setData.setAuthEmail;
     const setPassword = setData.setAuthPassword;
-    const setUserName = setData.setAuthUserName;
+    const setUserID = setData.setAuthUserID;
+    const setToken = setData.setToken;
+
     return (
         <div>
             {/* click and change */}
             <div className = "change-sign">
-                <span className = "signButton" style={{ cursor: 'pointer' }} onClick={() => handleThemeChange('default')}> SIGN IN </span>
+                <span className = "signButton" style={{ cursor: 'pointer' }} onClick={() => handleThemeChange('signin')}> SIGN IN </span>
                 <span style={{display: 'inline-block',width:'50px', verticalAlign: 'middle'}} > | </span>
                 <span className = "registerButton" style={{ cursor: 'pointer' }} onClick={() => handleThemeChange('register')}> REGISTER </span>
             </div>
@@ -245,10 +217,10 @@ function LogInPage({setData}) {
             <br/><br/>
             <div>
                 {theme === 'register' && (
-                    <Register data = {{setEmail, setPassword, setUserName}}/>
+                    <Register data = {{setEmail, setPassword, setUserID, setToken , setTheme}}/>
                 )}
-                {theme === 'default' && (
-                    <SignIn data = {{setEmail, setPassword, setUserName}}/>
+                {theme === 'signin' && (
+                    <SignIn data = {{setEmail, setPassword, setUserID, setToken }}/>
                 )} 
             </div>
             

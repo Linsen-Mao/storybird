@@ -1,0 +1,25 @@
+/***Work Images***/
+/* 作品集圖片(放中間) */
+#workImages .designPage{
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto; /* 水平置中 */
+  text-align: center; /* 文字內容置中 */
+}
+
+/* 控制台 */
+#workImages .controls {
+  display: flex;
+  align-items: center;
+}
+
+#workImages .controls button {
+  margin-right: 10px; /* 調整按鈕右側的間距 */
+}
+
+#workImages .pageIndicator {
+  flex-grow: 1; /* 讓中間的文字充滿可用空間 */
+  text-align: center;
+}

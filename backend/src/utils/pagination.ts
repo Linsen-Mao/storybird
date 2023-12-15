@@ -9,7 +9,7 @@ export const parsePaginationParams = (
     throw new AppError("Offset must be a number", 400);
   }
 
-  const takeValue = limit ? parseInt(limit, 10) : 10;
+  const takeValue = limit ? parseInt(limit, 10) : 100;
   if (isNaN(takeValue)) {
     throw new AppError("Limit must be a number", 400);
   }

@@ -1,1 +1,13 @@
 /***Home Page***/
+#homeCarousel .carousel-item img {
+    filter: brightness(70%); /* 調整 brightness 的值來控制圖片的明暗程度 */
+}
+  
+#homeCarousel .carousel-title {
+    font-weight: bold;
+}
+
+#homeCarousel .carousel-caption {
+    padding: 20px; /* Adjust the value as needed */
+    background-color: rgba(0, 0, 0, 0.5);
+}

@@ -1,0 +1,116 @@
+/* html, body {
+
+  } */
+
+
+.design-container {
+    height: 100%;
+    width: 100%;
+    background-color: blue;
+    padding: 0px;
+    justify-content: center;
+    align-items: center; 
+    background-color: red; 
+    padding: 0px;
+    height: 100%;
+    width: 100vw;
+    margin-top: 60px;
+}
+
+.style {
+    width: 100%;
+    border: 1px solid grey;
+    background-color: aqua;
+}
+
+
+.timesNewRoman {
+    font-family: "Times New Roman", Times, serif;
+}
+.georgia {
+    font-family: Georgia, serif;
+}
+.garamond {
+    font-family: Garamond, serif;
+}
+.arial {
+    font-family: Arial, Helvetica, sans-serif;
+}
+.tahoma {
+    font-family: Tahoma, Verdana, sans-serif;
+}
+.trebuchetMS {
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+}
+.geneva {
+    font-family: Geneva, Verdana, sans-serif;
+}
+.courierNew {
+    font-family: "Courier New", Courier, monospace;
+}
+.brushScriptMT {
+    font-family: "Brush Script MT", cursive;
+}
+.copperplate {
+    font-family: Copperplate, Papyrus, fantasy;
+}
+
+
+
+
+.designPage {
+    background-color: white;
+    width: 100%;
+    height: 100%; 
+    border: 1px solid grey;
+
+    display: flex;
+    justify-content: center;
+    padding: 5%;
+}
+
+.textInputLeft {
+    resize: none;
+    height: 100%;
+    width: 100%;
+    border: none;
+    outline: dashed 0.5px grey; 
+    display: block;
+
+    margin-right: 2.5%;
+    padding: 10px;
+}
+
+.textInputRight {
+    resize: none;
+    height: 100%;
+    width: 100%;
+    border: none;
+    outline: dashed 0.5px grey; 
+    display: block;
+
+    margin-left: 2.5%;
+    padding: 10px;
+}
+
+.uploadPictureLeft {
+    background-color: palevioletred;
+    height: 100%;
+    width: 100%;
+    display: none;
+    margin-right: 2.5%
+}
+
+.uploadPictureRight {
+    background-color: yellowgreen;
+    height: 100%;
+    width: 100%;
+    display: none;
+    margin-left: 2.5%;
+}
+
+.slide-container {
+    display: flex;
+    height: 100%;
+    width: 100%;
+}
