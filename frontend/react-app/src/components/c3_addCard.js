@@ -20,8 +20,8 @@ const AddNewItemCard = () => {
     <div className="addCard">
       <div className="card text-center">
       <div className="card-body">
-        <h5 className="card-title" onClick={addNewStory}>新增項目</h5>
-        <p className="card-text">點擊此處新增項目</p>
+        <h5 className="card-title" onClick={addNewStory}>+</h5>
+        <p className="card-text">Add New Image</p>
       </div>
       </div>
     </div>

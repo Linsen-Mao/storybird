@@ -66,7 +66,7 @@ const ImageGallery = () => {
         if (selectedCategory === 'All') {
           storiesData = await fetchStories();
         } else {
-          const selectedCategoryObject = categoriesData.find(category => category.id === selectedCategory);
+          const selectedCategoryObject = categoriesData.find(category => category.id === parseInt(selectedCategory, 10));
           const categoryId = selectedCategoryObject ? selectedCategoryObject.id : '';
           storiesData = await fetchCateStories(categoryId);
         }
@@ -84,22 +84,13 @@ const ImageGallery = () => {
   };
 
   const renderImages = () => {
-    const filteredData = selectedCategory === 'All'
-    ? stories.reduce((result, story) => ({
-        images: result.images.concat(story.coverImage),
-        ids: result.ids.concat(story.id),
-        title: result.title.concat(story.title),
-        categories: result.categories.concat(story.category ? story.category.name : ''),
-      }), { images: [], ids: [] , title: [], categories: []})
-    : stories
-        .filter((story) => story.category && story.category.name === selectedCategory)
-        .reduce((result, story) => ({
-            images: result.images.concat(story.coverImage),
-            ids: result.ids.concat(story.id),
-            title: result.title.concat(story.title),
-            categories: result.categories.concat(story.category ? story.category.name : ''),
-        }), { images: [], ids: [] , title: [], categories: []});
-    
+    const filteredData = stories.reduce((result, story) => ({
+      images: result.images.concat(story.coverImage),
+      ids: result.ids.concat(story.id),
+      title: result.title.concat(story.title),
+      categories: result.categories.concat(story.category ? story.category.name : ''),
+    }), { images: [], ids: [] , title: [], categories: []});
+
     const filteredImages = filteredData.images;
     const filteredIDs = filteredData.ids;
     const filteredTitles = filteredData.title;
@@ -116,7 +107,7 @@ const ImageGallery = () => {
       <div className="row row-cols-2 row-cols-md-4 row-cols-lg-5 g-3">
         {filteredImages.map((img, imgIndex) => (
         <div key={imgIndex} className="col">
-          <Link to={`/read/${filteredIDs[imgIndex]}`} className="navbar-brand">
+          <Link to={`/read/story/${filteredIDs[imgIndex]}`} className="navbar-brand">
             <ImageCard
               src={`http://localhost:4000/${img}`}
               alt={filteredIDs[imgIndex]}
@@ -132,16 +123,16 @@ const ImageGallery = () => {
 
   return (
     <div id="imageGallery" className="mt-5 container">
-      <h1 className="featurette-heading text-center mb-4">圖片庫</h1>
+      <h1 className="featurette-heading text-center mb-4">Image Gallery</h1>
       <hr className="featurette-divider" />
       <div className="container filter-container">
-        <label htmlFor="categorySelect">類別：</label>
+        <label htmlFor="categorySelect">Category：</label>
         <select
           id="categorySelect"
           value={selectedCategory}
           onChange={(e) => handleCategoryChange(e.target.value)}
         >
-          <option value="All">全部</option>
+          <option value="All">ALL</option>
           {categories.map((category, index) => (
             <option key={index} value={category.id}>
               {category.name}

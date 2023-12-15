@@ -11,8 +11,9 @@ import LogInPage from './components/signin.js';
 import Navbar from './components/c1_navbar.js';  
 import Homepage from './components/p1_homepage.js';
 import ImageGallery from './components/p2_imageGallery.js';
-import Read from './components/p2_1read.js';
 import MyInfo from './components/p3_myinfo.js';
+//
+import Read from './components/read.js';
 import DesignList from './components/DesignList.js';
 
 //////////////////////////////////////////////
@@ -47,21 +48,24 @@ function App() {
               <ImageGallery />
             </div>} />
 
-          <Route path="/read" element={
+          <Route path="/read/story/:storyID" element={
           <div>
             <Navbar />
             <Read />
           </div>} />
+
           <Route path="/myInfo" element={
           <div>
             <Navbar />
             <MyInfo userInfo = {{authEmail, setAuthUserName, authUserName, authUserID, token}}/>
           </div>} />
-          <Route path= "editPage" element={
+
+          <Route path= "/editPage" element={
           <div>
             <Navbar />
             <DesignList />
           </div>} />  
+          
       </Routes>  
     </div>
   

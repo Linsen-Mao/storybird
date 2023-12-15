@@ -33,7 +33,7 @@ const Navbar = () => {
             <div className="container">
                 <Link to={'/home'} className="navbar-brand">
                     <img src={Logo} alt="Logo" width="30" height="30" className="d-inline-block align-top" />
-                    {' '}StoryFish
+                    {' '}Story Fish
                 </Link>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive"
                     aria-expanded="false" aria-label="Toggle navigation">
@@ -41,10 +41,10 @@ const Navbar = () => {
                 </button>
                 <div className="collapse navbar-collapse" id="navbarResponsive">
                     <ul className="navbar-nav ms-auto">
-                        <li className="nav-item active"><Link to={'/home'} className="nav-link">首頁</Link></li>
-                        <li className="nav-item"><Link to={'/imageGallery'} className="nav-link">圖片庫</Link></li>
-                        <li className="nav-item"><Link to={'/myInfo'} className="nav-link">我的資料</Link></li>
-                        <li className="nav-item nav-link" onClick = {Logout}>登出</li>
+                        <li className="nav-item active"><Link to={'/home'} className="nav-link">Home</Link></li>
+                        <li className="nav-item"><Link to={'/imageGallery'} className="nav-link">Image Gallery</Link></li>
+                        <li className="nav-item"><Link to={'/myInfo'} className="nav-link">My Information</Link></li>
+                        <li className="nav-item nav-link" onClick = {Logout}>Log out</li>
                     </ul>
                 </div>
             </div>
