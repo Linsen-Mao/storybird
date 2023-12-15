@@ -5,6 +5,7 @@ import Form from 'react-bootstrap/Form';
 import React from 'react';
 import {useState, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
+
 const Register = ({data}) => {
 
     let registerURL = 'http://localhost:4000/users';
@@ -15,10 +16,10 @@ const Register = ({data}) => {
     const [loading, setLoading] = useState(false);
     const handleLoading = (newstate) => { setLoading(newstate); };
     let navigate = useNavigate();
-    /// worng situation from login
+    /// wrong situation from login
     const [check, setCheck] = useState(false);
     const WrongCondition = (newstate) => { setCheck(newstate); };
-
+    ///
     const handleSubmit = async (e) => {
         e.preventDefault(); 
         handleLoading(true);
@@ -38,6 +39,8 @@ const Register = ({data}) => {
                 data.setTheme('signin');
                 navigate('/');
             }
+            else{WrongCondition(true);}
+
             handleLoading(false);
 
         } catch (error) {
@@ -75,7 +78,7 @@ const Register = ({data}) => {
                 <br/><br/>
                 
                 {loading ? (
-                    <Button id="loading" variant="outline-light" disabled className="formButton">
+                    <Button id="loading" variant="light" disabled className="formButton">
                         <Spinner
                         as="span"
                         animation="border"
@@ -86,7 +89,7 @@ const Register = ({data}) => {
                         Loading...
                     </Button>
                     ) : (
-                    <Button id="submitButton" variant="outline-light" type="submit" className="formButton" >
+                    <Button id="submitButton" variant="light" type="submit" className="formButton">
                         Submit
                     </Button>
                     )}
@@ -104,7 +107,7 @@ const SignIn = ({data}) => {
     /// loading icon
     const [loading, setLoading] = useState(false);
     const handleLoading = (newstate) => { setLoading(newstate); };
-    /// worng situation from login
+    /// wrong situation from login
     const [check, setCheck] = useState(false);
     const WrongCondition = (newstate) => { setCheck(newstate); };
     /// jump page
@@ -139,6 +142,10 @@ const SignIn = ({data}) => {
                 navigate('/home');
                 // 
             } 
+            else{
+                WrongCondition(true);
+                handleLoading(false);
+            }
             
         } catch (error) {
             WrongCondition(true);
@@ -162,10 +169,11 @@ const SignIn = ({data}) => {
                         value={password} onChange={(e) => setPassword(e.target.value)}/>
 
                 </Form.Group>
-                {check ? (<Form.Label disabled className="email-error" > wrong email or wrong password. </Form.Label>) : (<Form.Label></Form.Label>)}
+                <br></br>
+                {check ? ( <Form.Label disabled className="email-error" > wrong email or wrong password. </Form.Label>) : (<Form.Label></Form.Label>)}
                 <br/><br/>
                 {loading ? (
-                    <Button id="loading" variant="outline-light" disabled className="formButton">
+                    <Button id="loading" variant="light" disabled className="formButton">
                         <Spinner
                         as="span"
                         animation="border"
@@ -176,7 +184,7 @@ const SignIn = ({data}) => {
                         Loading...
                     </Button>
                     ) : (
-                    <Button id="submitButton" variant="outline-light" type="submit" className="formButton" >
+                    <Button id="submitButton" variant="light" type="submit" className="formButton" >
                         Submit
                     </Button>
                     )}

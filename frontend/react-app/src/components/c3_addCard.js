@@ -8,13 +8,24 @@ const AddNewItemCard = () => {
 
   const addNewStory = async () => {
     let createStoryURL = 'http://localhost:4000/stories'
-    try {
-        const response = await fetch(createStoryURL)
-        const data = await response.json();
-        console.log(data)
-        navigate('/editPage')
-
-    } catch (err) {console.error(err.message);}
+    fetch(createStoryURL, {
+                method: 'POST',
+                credentials: 'include',
+            })
+            .then(response => {
+              if (!response.ok) {
+                throw new Error(`${response.status}`);
+              }
+              return response.json();
+            })
+            .then(data => {
+              
+                // console.log(data);
+                navigate('/editPage')
+            })
+            .catch(error => {
+              console.error('Error:', error.message);
+    });
   }
   return (
     <div className="addCard">

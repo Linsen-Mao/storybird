@@ -17,6 +17,7 @@ const Navbar = () => {
                 headers: {
                 'Content-Type': 'application/json', // 告訴後端是json形式
                 },
+                
                 body: JSON.stringify({}), // 前端傳給後端
             });
             if (!response.ok) { throw new Error('Register failed');}

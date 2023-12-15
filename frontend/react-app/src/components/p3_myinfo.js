@@ -5,7 +5,7 @@ import React, { useEffect,useState } from 'react';
 import Cookie from 'js-cookie';
 function MyInfo({userInfo}) {
     const {authEmail, setAuthUserName, setAuthUserID, authUserName, authUserID, token} = userInfo;
-    console.log(authUserID, token)
+    console.log(authUserID, token);
     Cookie.set('jwt',token, {expires: 7, path: '/'});
     console.log(document.cookie);
     // const [userData, setUserData] = useState(null);
@@ -36,26 +36,6 @@ function MyInfo({userInfo}) {
 
             fetchData();
     }, [authUserID]); // when authEmail change, tragger useEffect
-
-    // useEffect(() => {
-        
-    //     if (userData) {
-    //         console.log(userData);
-    //         console.log(authEmail);
-    //         const thisUser = userData.find(user => user.email === authEmail);
-            
-    //         if (thisUser) {
-    //             console.log(thisUser);
-    //         } 
-    //         else {
-    //             console.log('not found.');
-    //         }
-    //     }
-    //     else{
-    //         console.log('userData is null.')
-    //     }
-    // }, [userData, authEmail]);
-
 
     const myInfo = [authUserName, authEmail, require('../img/monster04.png')];
     return (
