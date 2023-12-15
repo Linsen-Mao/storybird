@@ -2,10 +2,27 @@ import React, { useRef, useState, useEffect } from "react";
 import Design from "./Design";
 import './DesignList.css'
 
-const DesignList = (props) => {
+const DesignList = () => {
 
     // Initial slide passed by prop
-    const { startData, writer } = props;
+    //const { startData, writer } = props;
+    const startData = [
+      {
+        "id": 1,
+        "imageFile": "https://uxwing.com/wp-content/themes/uxwing/download/video-photography-multimedia/upload-image-icon.png",
+        "caption": "HAAAALLLOOOO",
+        "style": ["Arial, Helvetica, sans-serif", "16px", "#000000", "img text"]
+      },
+      {
+        "id": 2,
+        "imageFile": "https://uxwing.com/wp-content/themes/uxwing/download/video-photography-multimedia/upload-image-icon.png",
+        "caption": "PUPS",
+        "style": ["Arial, Helvetica, sans-serif", "16px", "#000000", "text img"]
+      }
+  
+    ]
+
+    const writer = true;
 
     // Save Button Click
     const designComponentsRef = useRef([]); // Ref to store Design component references

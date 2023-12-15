@@ -14,7 +14,12 @@ import ImageGallery from './components/p2_imageGallery.js';
 import MyInfo from './components/p3_myinfo.js';
 //
 import Read from './components/read.js';
+
+// alissa
+import CreateStory from './components/edit/CreateStory.js'
+import UploadImages from './components/edit/UploadImages.js'
 import DesignList from './components/DesignList.js';
+
 
 //////////////////////////////////////////////
 function App() {
@@ -60,11 +65,24 @@ function App() {
             <MyInfo userInfo = {{authEmail, setAuthUserName, authUserName, authUserID, token}}/>
           </div>} />
 
+          {/*changed by Alissa*/}
+          <Route path= "/createStory" element={
+          <div>
+            <Navbar />
+            <CreateStory />
+          </div>} />  
+
+          <Route path= "/uploadImages" element={
+          <div>
+            <Navbar />
+            <UploadImages />
+          </div>} /> 
+
           <Route path= "/editPage" element={
           <div>
             <Navbar />
             <DesignList />
-          </div>} />  
+          </div>} /> 
           
       </Routes>  
     </div>

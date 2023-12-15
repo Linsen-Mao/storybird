@@ -56,12 +56,13 @@ const UploadImages = () => {
         if (confirmation) {
           // Code to continue editing
           console.log("Continue editing");
-          navigate("/edit");
+          navigate("/editPage");
 
 
         } else {
           // Code to finish editing
           console.log("Finish editing");
+          navigate("/");
         }
     }
 
