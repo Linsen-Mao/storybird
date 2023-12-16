@@ -27,7 +27,7 @@ const UploadImages = () => {
 
     const navigate = useNavigate();
 
-    const uploadImages = () => {
+    const uploadImages = async () => {
 
         //send data to backend
         const data = selectedImages.map((src, index) => ({
@@ -35,6 +35,7 @@ const UploadImages = () => {
             imgSrc: src,
           }));
 
+          
           /*fetch('your-backend-url', {
             method: 'POST',
             headers: {
