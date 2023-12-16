@@ -5,7 +5,7 @@ import React, { useEffect,useState } from 'react';
 import Cookie from 'js-cookie';
 function MyInfo({userInfo}) {
     const {authEmail, setAuthUserName, setAuthUserID, authUserName, authUserID, token} = userInfo;
-    console.log(authUserID, token);
+    console.log(authUserID);
     Cookie.set('jwt',token, {expires: 7, path: '/'});
     console.log(document.cookie);
     // const [userData, setUserData] = useState(null);
