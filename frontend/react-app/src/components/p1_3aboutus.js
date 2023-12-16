@@ -43,7 +43,7 @@ function AboutUs() {
   ];
   
   return (
-    <div id="aboutUs" className="bg-light p-5">
+    <div id="aboutUs" className="p-5">
       <h1 className="featurette-heading text-center mb-4">我們的團隊</h1>
       <hr className="featurette-divider"/>
       <div className="container">

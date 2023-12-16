@@ -1,5 +1,4 @@
 // WorkImages.js
-// 渲染作品圖片
 import React, { useRef, useState, useEffect } from 'react';
 import '../css/c4_workImages.css';
 
@@ -8,7 +7,7 @@ const WorkImages = ({ imageData }) => {
   const [slideList, setSlideList] = useState([]);
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
 
-  // Design component
+  // Design component(待渲染的圖片)
   const Image = ({ id, image, caption }) => {
     return (
       <div className="image-container">

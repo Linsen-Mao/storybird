@@ -19,7 +19,7 @@ function Instruction() {
   ];
 
   return (
-    <div id="instruction" className="bg-light p-5">
+    <div id="instruction" className="p-5">
       <h1 className="featurette-heading text-center mb-4">如何使用</h1>
       <hr className="featurette-divider"/>
       <div className='container'>

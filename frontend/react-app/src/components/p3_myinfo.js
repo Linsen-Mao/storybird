@@ -39,7 +39,7 @@ function MyInfo({userInfo}) {
 
     const myInfo = [authUserName, authEmail, require('../img/monster04.png')];
     return (
-        <div id="myInfo" className="bg-light mt-5">
+        <div id="myInfo" className="container mt-5">
             <h1 className="featurette-heading text-center mb-4">My Information</h1>
             <hr className="featurette-divider" />
             <div className="container">

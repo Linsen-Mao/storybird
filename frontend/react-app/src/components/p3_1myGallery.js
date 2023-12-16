@@ -59,9 +59,14 @@ function MyGallery({ authUserID }) {
             <>
               <h2 className="card-title">My Image</h2>
               <div className='row row-cols-1 row-cols-md-3 row-cols-lg-4 g-3'>
-                <AddNewItemCard />
+                <Link to="/createStory" className="navbar-brand">
+                  <AddNewItemCard />
+                </Link>
                 {myImage.map((item) => (
-                  <ImageCard key={item.id} src={item.src} alt={item.alt} title={item.title} category={item.category} />
+                  <Link to={`/imageGallery/${item.id}`} className="navbar-brand">
+                    <ImageCard key={item.id} src={item.src} alt={item.alt} title={item.title} category={item.category} />
+                  </Link>
+                  
                 ))}
               </div>
             </>

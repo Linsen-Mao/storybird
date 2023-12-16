@@ -96,7 +96,7 @@ const ImageGallery = () => {
     const filteredTitles = filteredData.title;
     const filteredCategories = filteredData.categories;
     if (loading) {
-      return <p>Loading...</p>;
+      return <div className="loading-spinner">Loading...</div>;
     }
 
     if (filteredImages.length === 0) {
