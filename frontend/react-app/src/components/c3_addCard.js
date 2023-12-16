@@ -21,7 +21,7 @@ const AddNewItemCard = () => {
             .then(data => {
               
                 // console.log(data);
-                navigate('/editPage')
+                navigate('/createStory')
             })
             .catch(error => {
               console.error('Error:', error.message);

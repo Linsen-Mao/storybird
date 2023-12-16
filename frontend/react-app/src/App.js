@@ -18,7 +18,7 @@ import Read from './components/read.js';
 // alissa
 import CreateStory from './components/edit/CreateStory.js'
 import UploadImages from './components/edit/UploadImages.js'
-import DesignList from './components/DesignList.js';
+import DesignList from './components/edit/DesignList.js';
 
 
 //////////////////////////////////////////////
