@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import ImageCard from './c2_imageCard'; 
+import Spinner from 'react-bootstrap/Spinner';
 import '../css/p2_imageGallery.css';
 
 const ImageGallery = () => {
@@ -96,7 +97,7 @@ const ImageGallery = () => {
     const filteredTitles = filteredData.title;
     const filteredCategories = filteredData.categories;
     if (loading) {
-      return <div className="loading-spinner">Loading...</div>;
+      return <span><Spinner animation="border" />Loading...</span>;
     }
 
     if (filteredImages.length === 0) {

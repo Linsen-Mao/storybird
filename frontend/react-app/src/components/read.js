@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import '../css/read.css';
-import DesignList from './edit/DesignList'; // 导入DesignList组件！但是要怎麼變成僅閱讀模式呢？
+import DesignList from './edit/DesignList'; 
+import Spinner from 'react-bootstrap/Spinner';
 
 const Read = () => {
   const { storyID } = useParams();
@@ -58,7 +59,7 @@ const Read = () => {
   }, [storyID]);
 
   if (loading) {
-    return <div className="loading-spinner">Loading...</div>;
+    return <span><Spinner animation="border" />Loading...</span>;
   } else {
     return (
       <div id="read" className="mt-5 p-5">
