@@ -5,37 +5,37 @@ import React from 'react';
 function AboutUs() {
   const aboutus_data = [
     {
-      title: '專案經理',
+      title: 'Project Manager',
       name: '王小明',
       img: require('../img/monster02.png'),
       description: '...'
     },
     {
-      title: '前端',
+      title: 'Frontend',
       name: '王小明',
       img: require('../img/monster03.png'),
       description: '...'
     },
     {
-      title: '前端',
+      title: 'Frontend',
+      name: '許聖慧',
+      img: require('../img/ourteam/Hsu.jpg'),
+      description: 'NTU STAT'
+    },
+    {
+      title: 'Frontend',
       name: '王小明',
       img: require('../img/monster03.png'),
       description: '...'
     },
     {
-      title: '前端',
-      name: '王小明',
-      img: require('../img/monster03.png'),
-      description: '...'
-    },
-    {
-      title: '後端',
+      title: 'Backend',
       name: '王小明',
       img: require('../img/monster04.png'),
       description: '...'
     },
     {
-      title: '後端',
+      title: 'Backend',
       name: '王小明',
       img: require('../img/monster04.png'),
       description: '...'
