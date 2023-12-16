@@ -4,7 +4,7 @@ import './Design.css';
 const Design = forwardRef((props, ref) => {
 
     //editText = boolean, True->edit text/disable upload img, False->upload img/diable edit text
-    const { id, imageFile, caption, fontFamily, size, color, style, /*sendDataToParent,*/ editText} = props; 
+    const { id, imageFile, caption, fontFamily, size, color, style, /*sendDataToParent,*/ editText, preview} = props; 
 
     const [selectedColor, setSelectedColor] = useState(color);
 
@@ -82,9 +82,9 @@ const Design = forwardRef((props, ref) => {
     // set select-tag option at first render
     useEffect(() => {
         // This function will be called when the component is first rendered
+        const elementID = parseInt(id) - 1;
 
         if(style!=null) {
-            const elementID = parseInt(id) -1
             const selectStyle= document.getElementsByClassName('selectStyle')[elementID];
 
             // Set the selected option by setting the value
@@ -93,9 +93,24 @@ const Design = forwardRef((props, ref) => {
             selectStyle.dispatchEvent(new Event('change', { bubbles: true }));
         }
 
-        if(!editText) {
-            const elementID = parseInt(id) - 1;
+        if(preview) {
+            const style = document.getElementsByClassName('style')[elementID];
+            style.style.display = "none";
 
+            const textLeft = document.getElementsByClassName('textInputLeft')[elementID];
+            textLeft.readOnly = true;
+
+            const textRight = document.getElementsByClassName('textInputRight')[elementID];
+            textRight.readOnly = true;
+
+            const imgLeft = document.getElementsByClassName('inputFileLeft')[elementID];
+            imgLeft.disabled = true;
+
+            const imgRight = document.getElementsByClassName('inputFileRight')[elementID];
+            imgRight.disabled = true;
+        }
+
+        else if(!editText) {
             const selectFont = document.getElementsByClassName('selectFont')[elementID];
             selectFont.disabled = true;
 

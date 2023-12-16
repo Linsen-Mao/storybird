@@ -2,10 +2,10 @@ import React, { useRef, useState, useEffect } from "react";
 import Design from "./Design";
 import './DesignList.css'
 
-const DesignList = () => {
+const DesignList = (props) => {
 
     // Initial slide passed by prop
-    //const { startData, writer } = props;
+    const { preview } = props;
     const startData = [
       {
         "id": 1,
@@ -21,11 +21,11 @@ const DesignList = () => {
       }
   
     ]
-
     const writer = true;
 
+
     // Save Button Click
-    const designComponentsRef = useRef([]); // Ref to store Design component references
+    //const designComponentsRef = useRef([]); // Ref to store Design component references
 
     //var dataList = [];
 
@@ -75,6 +75,7 @@ const DesignList = () => {
                   color={element.style[2]}
                   style={element.style[3]}
                   editText={writer}
+                  preview={preview}
                   />
         }
 
@@ -120,12 +121,22 @@ const DesignList = () => {
                     size="16px" 
                     color="#000000"
                     style="img text"
-                    editText={writer}/>}
+                    editText={writer}
+                    preview={false}/>}
 
         const newSlideList = [...slideList, newSlide];
         setSlideList(newSlideList);
         setCurrentSlideIndex(newID-1);
     }
+
+    useEffect(() => {
+      // This function will be called when the component is first rendered
+      if(preview) {
+        const addSlideButton = document.getElementsByClassName('addSlideBtn')[0];
+        addSlideButton.style.display = "none";
+      }
+      
+    }, []);
 
 
     return(        

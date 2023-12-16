@@ -51,7 +51,7 @@ const UploadImages = () => {
 
                 // continue with text editing?
                 const confirmation = window.confirm("Images uploaded. Do you want to continue edit the text?");
-                
+
                 if (confirmation) {
                   // Code to continue editing
                   console.log("Continue editing");
@@ -69,7 +69,7 @@ const UploadImages = () => {
             }
         } catch (error) {
             // Handle fetch error
-            alert("Fetch error", response.status);
+            alert("Fetch error", error);
             console.error('Error:', error);
         }
     }

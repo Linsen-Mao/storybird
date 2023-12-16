@@ -1,4 +1,4 @@
-import React, {useState, useRef} from "react";
+import React, {useState, useRef, useEffect} from "react";
 import './CreateStory.css'
 import { useNavigate } from "react-router-dom";
 
@@ -98,7 +98,7 @@ const CreateStory = () => {
             }
         } catch (error) {
             // Handle fetch error
-            alert("Fetch error", response.status);
+            alert("Fetch error", error);
             console.error('Error:', error);
         }
     }
