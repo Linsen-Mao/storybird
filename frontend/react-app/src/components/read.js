@@ -73,7 +73,7 @@ const Read = () => {
           <div className="row">
             <div className="col-12 col-lg-8">
               {/* 直接将DesignList组件放在这里 */}
-              <DesignList startData={images} />
+              <DesignList preview={true} />
             </div>
             <div className="col-12 col-lg-4">
               <div id="workInfo" className="featurette">

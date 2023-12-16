@@ -4,15 +4,14 @@ import AddNewItemCard from './c3_addCard';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-function MyGallery({ authUserID }) {
+function MyGallery({ userID }) {
   const [myImage, setMyImage] = useState([]);
   const [myWork, setMyWork] = useState([]);
   const [activeTab, setActiveTab] = useState('myImage');
-
   useEffect(() => {
     const fetchMyData = async () => {
       try {
-        const response = await fetch(`http://localhost:4000/users/${authUserID}/stories`, {
+        const response = await fetch(`http://localhost:4000/users/${userID.authUserID}/stories`, {
           method: 'GET',
           credentials: 'include'
         });
@@ -20,6 +19,7 @@ function MyGallery({ authUserID }) {
         // Validate the response structure
         const myImageData = data && data.createdStories ? data.createdStories : [];
         const myWorkData = data && data.writtenStories ? data.writtenStories : [];
+        console.log(myImageData);
         setMyImage(myImageData);
         setMyWork(myWorkData);
       } catch (error) {
@@ -29,7 +29,7 @@ function MyGallery({ authUserID }) {
     };
 
     fetchMyData();
-  }, [authUserID]);
+  }, [userID.authUserID]);
 
   return (
     <div className='container'>
@@ -63,10 +63,9 @@ function MyGallery({ authUserID }) {
                   <AddNewItemCard />
                 </Link>
                 {myImage.map((item) => (
-                  <Link to={`/imageGallery/${item.id}`} className="navbar-brand">
-                    <ImageCard key={item.id} src={item.src} alt={item.alt} title={item.title} category={item.category} />
+                  <Link to={`/editPage/${item.id}`} className="navbar-brand">
+                    <ImageCard key={item.id} src={`http://localhost:4000/${item.coverImage}`} alt={item.alt} title={item.title}/>
                   </Link>
-                  
                 ))}
               </div>
             </>
@@ -87,7 +86,7 @@ function MyGallery({ authUserID }) {
                 </Link>
                 {myWork.map((item) => (
                   <Link to={`/read/story/${item.id}`} className="navbar-brand">
-                    <ImageCard key={item.id} src={item.coverImage} alt={item.id} title={item.title} />
+                    <ImageCard key={item.id} src={`http://localhost:4000/${item.coverImage}`} alt={item.id} title={item.title} />
                   </Link>
                 ))}
               </div>
