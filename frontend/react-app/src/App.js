@@ -27,12 +27,19 @@ function App() {
   const [authEmail, setAuthEmail] = useState(null);
   const [authPassword, setAuthPassword] = useState(null);
   const [authUserName, setAuthUserName] = useState(null);
-  const [authUserID, setAuthUserID] = useState(null);
+
+  const localID = localStorage.getItem('myKey') || null;
+
+  const [authUserID, setAuthUserID] = useState(localID);
   const [token, setToken] = useState(null);
   useEffect(() => {
     Cookie.set('jwt',token, {expires: 7, path: '/'});
     console.log('COOKIE: ',document.cookie);
   },[token]);
+
+  useEffect(() => {
+    localStorage.setItem('myKey', authUserID);
+  },[authUserID]);
   return (
     <div className="App">
       <Routes>
@@ -66,7 +73,7 @@ function App() {
           <Route path="/myInfo" element={
           <div>
             <Navbar />
-            <MyInfo userInfo = {{authEmail, setAuthUserName, authUserName, authUserID, token}}/>
+            <MyInfo userInfo = {{setAuthEmail, authEmail, setAuthUserName, authUserName, authUserID, token}}/>
           </div>} />
 
           {/*changed by Alissa*/}

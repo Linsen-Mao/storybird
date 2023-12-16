@@ -3,7 +3,7 @@ import '../css/p3_myInfo.css';
 import MyGallery from './p3_1myGallery.js';
 import React, { useEffect,useState } from 'react';
 function MyInfo({userInfo}) {
-    const {authEmail, setAuthUserName, setAuthUserID, authUserName, authUserID, token} = userInfo;
+    const {setAuthEmail, authEmail, setAuthUserName, setAuthUserID, authUserName, authUserID, token} = userInfo;
     console.log('ID:',authUserID);
 
     useEffect(() => {
@@ -24,7 +24,9 @@ function MyInfo({userInfo}) {
                     console.log(data);
                     //
                     const name = data.username;
+                    const email = data.email;
                     setAuthUserName(name);
+                    setAuthEmail(email);
                 })
                 .catch(error => {
                   console.error('Error:', error.message);
