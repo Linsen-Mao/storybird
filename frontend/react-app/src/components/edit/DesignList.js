@@ -92,14 +92,37 @@ const DesignList = (props) => {
     }
   };
 
-  return (
+  return(        
     <div className="designList-container">
-      {/* UI code here */}
-      <button className="saveBtn" onClick={handleSave}>
-        Save
-      </button>
+        <div className="createPage">
+                <div className="divContainer">
+                  <div className="space"/>
+                  <button className="slideBtn" onClick={showPreviousSlide}>&lt;</button>
+                  <div className="space"/>
+                </div>
+
+                {slideList.map((slide, index) => (
+                    <div className="designPage" key={index} style={{ display: index === currentSlideIndex ? 'block' : 'none' }}>
+                    {slide.slide}
+                    </div>
+                ))}
+
+                <div className="divContainer">
+                  <div className="space"/>
+                  <button className="slideBtn" onClick={showNextSlide}>&gt;</button>
+                  <div className="space">
+                   <button className="addSlideBtn">+</button>
+                  </div>
+                </div>
+                
+        </div>
+
+        <div className="foot">
+          <label className="pageNumber">{currentSlideIndex+1}/{slideList.length}</label>
+        </div>
+        
     </div>
-  );
+);
 };
 
 export default DesignList;

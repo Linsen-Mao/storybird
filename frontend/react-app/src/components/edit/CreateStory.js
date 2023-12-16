@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import "./CreateStory.css";
 import { useNavigate } from "react-router-dom";
 import DesignList from "./DesignList";
+import UploadImages from "./UploadImages";
 
 const CreateStory = () => {
   // upload image
@@ -133,6 +134,7 @@ const CreateStory = () => {
       </div>
 
       {/* Render DesignList if storyId is set */}
+      {storyId && <UploadImages storyID={storyId} />}
       {storyId && <DesignList storyID={storyId} preview={false} />}
     </div>
   );

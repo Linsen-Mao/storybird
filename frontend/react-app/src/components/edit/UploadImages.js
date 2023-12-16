@@ -1,27 +1,36 @@
 import React, { useState } from "react";
 import './UploadImages.css'
 import { useNavigate } from "react-router-dom";
+import { useParams } from 'react-router-dom';
 
 
-const UploadImages = () => {
-    const [selectedImages, setSelectedImages] = useState([]);
+
+const UploadImages = ( props ) => {
+
+    const { storyID } = props;
+    //const { storyID } = useParams();
+
+    //const [selectedImages, setSelectedImages] = useState([]);
+    const [imgFiles, setImgFiles] = useState([]);
 
     const onSelectFile = (event) => {
         const selectedFiles = event.target.files;
         const selectedFilesArray = Array.from(selectedFiles);
 
-        const imagesArray = selectedFilesArray.map((file) => {
+        /*const imagesArray = selectedFilesArray.map((file) => {
         return URL.createObjectURL(file);
         });
 
-        setSelectedImages((previousImages) => previousImages.concat(imagesArray));
+        setSelectedImages((previousImages) => previousImages.concat(imagesArray));*/
+        setImgFiles((previousImgFiles) => previousImgFiles.concat(selectedFilesArray));
 
         // FOR BUG IN CHROME
         event.target.value = "";
     };
 
     function deleteHandler(image) {
-        setSelectedImages(selectedImages.filter((e) => e !== image));
+        //setSelectedImages(selectedImages.filter((e) => e !== image));
+        setImgFiles(imgFiles.filter((e) => e !== image))
         URL.revokeObjectURL(image);
     }
 
@@ -29,49 +38,31 @@ const UploadImages = () => {
 
     const uploadImages = async () => {
 
-        //send data to backend
-        const data = selectedImages.map((src, index) => ({
-            id: index, //starting from 0 [or should it start from 1? then +1]
-            imgSrc: src,
-          }));
+        //console.log(selectedImages);
+        console.log(imgFiles);
 
-          let url = 'http://localhost:4000/images' //??
+        for (let i = 0; i < imgFiles.length; i++) {
+            const formData = new FormData();
+            formData.append("imageFile", imgFiles[i]);
+            formData.append("order", i);
 
-          try {
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json', // 告訴後端是json形式
-                    },
-                credentials: 'include',
-                body: JSON.stringify(data),
-            });
-            if(response.ok) {
-                console.log("images have been uploaded");
-
-                // continue with text editing?
-                const confirmation = window.confirm("Images uploaded. Do you want to continue edit the text?");
-
-                if (confirmation) {
-                  // Code to continue editing
-                  console.log("Continue editing");
-                  navigate("/editPage");
-                } else {
-                  // Code to finish editing
-                  console.log("Finish editing");
-                  navigate("/"); //to where???
+            let url = `http://localhost:4000/stories/${storyID}/images`; 
+            try {
+                const response = await fetch(url, {
+                    method: "POST",
+                    credentials: "include",
+                    body: formData, // 发送FormData对象
+                });
+                if (!response.ok) {
+                    alert("image couldnt be send to backend", response.status);
+                    console.error("Request failed:", response.status);
                 }
-                
-            } else {
-                // Handle error response
-                alert("Something's wrong! Please try again.", response.status);
-                console.error('Request failed:', response.status);
+            } catch (error) {
+                console.error("Error:", error);
             }
-        } catch (error) {
-            // Handle fetch error
-            alert("Fetch error", error);
-            console.error('Error:', error);
         }
+
+        navigate("/editPage");
     }
 
     return (
@@ -92,7 +83,7 @@ const UploadImages = () => {
             <input className="inputUploadImage" type="file" multiple />
 
             <div className="images">
-                {selectedImages &&
+                {/*{selectedImages &&
                 selectedImages.map((image, index) => {
                     return (
                     <div key={image} className="image">
@@ -104,17 +95,34 @@ const UploadImages = () => {
                         <p>{index + 1}</p>
                     </div>
                     );
+                })}*/}
+
+                {imgFiles &&
+                imgFiles.map((image, index) => {
+                    return (
+                    <div key={URL.createObjectURL(image)} className="image">
+                        <button onClick={() => deleteHandler(image)}>
+                        x
+                        </button>
+                        <img className="uploadedImg" src={URL.createObjectURL(image)} alt="upload" />
+                        
+                        <p>{index + 1}</p>
+                    </div>
+                    );
                 })}
             </div>
 
-            {selectedImages.length > 0 ? 
+            {/*{selectedImages.length > 0 ? */}
+            {imgFiles.length > 0 ?
                 (
                 <button
                     className="upload-btn"
                     onClick={uploadImages}
                 >
-                    UPLOAD {selectedImages.length} IMAGE
-                    {selectedImages.length === 1 ? "" : "S"}
+                    {/*UPLOAD {selectedImages.length} IMAGE
+                    {selectedImages.length === 1 ? "" : "S"}*/}
+                    UPLOAD {imgFiles.length} IMAGE
+                    {imgFiles.length === 1 ? "" : "S"}
                 </button>    
                 ) : 
                 <br/>
