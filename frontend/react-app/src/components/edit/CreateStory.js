@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./CreateStory.css";
 import { useNavigate } from "react-router-dom";
+import DesignList from "./DesignList";
 
 const CreateStory = () => {
   // upload image
@@ -10,6 +11,8 @@ const CreateStory = () => {
   const [imagePreview, setImagePreview] = useState(
     "https://t4.ftcdn.net/jpg/05/65/22/41/360_F_565224180_QNRiRQkf9Fw0dKRoZGwUknmmfk51SuSS.jpg"
   );
+
+  const [storyId, setStoryId] = useState(null); // State to store the story ID
 
   const handleImageClick = () => {
     inputRef.current.click();
@@ -77,6 +80,8 @@ const CreateStory = () => {
         body: formData, // 发送FormData对象
       });
       if (response.ok) {
+        const responseData = await response.json();
+        setStoryId(responseData.id);
         console.log("story was created successfully!!");
         // setp 2: go to upload images slide TODO
         navigate("/uploadImages");
@@ -88,6 +93,7 @@ const CreateStory = () => {
       // 响应处理...
     } catch (error) {
       // 错误处理...
+      console.error("Error:", error);
     }
   };
 
@@ -123,8 +129,11 @@ const CreateStory = () => {
             </option>
           ))}
         </select>
-        <button onClick={createNewStory}>create</button>
+        <button onClick={createNewStory}>Create</button>
       </div>
+
+      {/* Render DesignList if storyId is set */}
+      {storyId && <DesignList storyID={storyId} preview={false} />}
     </div>
   );
 };
