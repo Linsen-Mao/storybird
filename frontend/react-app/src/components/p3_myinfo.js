@@ -2,13 +2,10 @@
 import '../css/p3_myInfo.css';
 import MyGallery from './p3_1myGallery.js';
 import React, { useEffect,useState } from 'react';
-import Cookie from 'js-cookie';
 function MyInfo({userInfo}) {
     const {authEmail, setAuthUserName, setAuthUserID, authUserName, authUserID, token} = userInfo;
-    console.log(authUserID);
-    Cookie.set('jwt',token, {expires: 7, path: '/'});
-    console.log(document.cookie);
-    // const [userData, setUserData] = useState(null);
+    console.log('ID:',authUserID);
+
     useEffect(() => {
         const fetchData = async () => {
             
