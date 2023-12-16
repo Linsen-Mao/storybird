@@ -24,9 +24,9 @@ function AboutUs() {
     },
     {
       title: 'Frontend',
-      name: '王小明',
+      name: '張芸菲',
       img: require('../img/monster03.png'),
-      description: '...'
+      description: 'NTU CHEM'
     },
     {
       title: 'Backend',

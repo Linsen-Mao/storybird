@@ -2,8 +2,9 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 ///////////////// bootstrap /////////////////////
 //////////////// react //////////////////
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Cookie from 'js-cookie';
 //////////////// components //////////////////
 import Slide from './components/slide.js';
 import LogInPage from './components/signin.js';
@@ -26,9 +27,19 @@ function App() {
   const [authEmail, setAuthEmail] = useState(null);
   const [authPassword, setAuthPassword] = useState(null);
   const [authUserName, setAuthUserName] = useState(null);
-  const [authUserID, setAuthUserID] = useState(null);
+
+  const localID = localStorage.getItem('myKey') || null;
+
+  const [authUserID, setAuthUserID] = useState(localID);
   const [token, setToken] = useState(null);
-  // const []
+  useEffect(() => {
+    Cookie.set('jwt',token, {expires: 7, path: '/'});
+    console.log('COOKIE: ',document.cookie);
+  },[token]);
+
+  useEffect(() => {
+    localStorage.setItem('myKey', authUserID);
+  },[authUserID]);
   return (
     <div className="App container">
       <Routes>
@@ -62,7 +73,7 @@ function App() {
           <Route path="/myInfo" element={
           <div>
             <Navbar />
-            <MyInfo userInfo = {{authEmail, setAuthUserName, authUserName, authUserID, token}}/>
+            <MyInfo userInfo = {{setAuthEmail, authEmail, setAuthUserName, authUserName, authUserID, token}}/>
           </div>} />
 
           {/*changed by Alissa*/}
