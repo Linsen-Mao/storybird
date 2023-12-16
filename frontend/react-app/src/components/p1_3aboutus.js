@@ -44,7 +44,7 @@ function AboutUs() {
   
   return (
     <div id="aboutUs" className="p-5">
-      <h1 className="featurette-heading text-center mb-4">我們的團隊</h1>
+      <h1 className="featurette-heading text-center mb-4">Our Team</h1>
       <hr className="featurette-divider"/>
       <div className="container">
         <div className="row row-cols-2 row-cols-sm-3 row-cols-md-6 g-3">

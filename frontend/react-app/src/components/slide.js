@@ -17,8 +17,8 @@ const Slide = () => {
             alt="First slide"
           />
           <Carousel.Caption className="carousel-caption">
-            <h3>綠色能源的未來之旅</h3>
-            <p>先進科技，開啟可持續的全新時代</p>
+            <h3>Future Journey</h3>
+            <p>Advanced technology opens the door to a sustainable new era.</p>
           </Carousel.Caption>
         </Carousel.Item>
         <Carousel.Item>
@@ -28,8 +28,8 @@ const Slide = () => {
             alt="Second slide"
           />
           <Carousel.Caption className="carousel-caption">
-            <h3>藍色夢幻 逐夢而飛</h3>
-            <p>女孩將夢想注入藍天之巔，編織出美麗的時光</p>
+            <h3>Blue Dreams - Sky of Memories</h3>
+            <p>A girl injects her dreams into the sky, weaving a tapestry of beautiful moments.</p>
           </Carousel.Caption>
         </Carousel.Item>
         <Carousel.Item>
@@ -39,8 +39,8 @@ const Slide = () => {
             alt="Third slide"
           />
           <Carousel.Caption className="carousel-caption">
-            <h3>孤獨島嶼的寧靜之美</h3>
-            <p>一座孤獨的島嶼，卻有著無限的寧靜之美</p>
+            <h3>The Lonely Island</h3>
+            <p>A solitary island, yet adorned with boundless tranquility and beauty.</p>
           </Carousel.Caption>
         </Carousel.Item>
       </Carousel>

@@ -30,7 +30,7 @@ function App() {
   const [token, setToken] = useState(null);
   // const []
   return (
-    <div className="App">
+    <div className="App container">
       <Routes>
           <Route path="/" element={
             <div className="app-box">

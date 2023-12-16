@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  font-family: 'Times New Roman', Times, serif;
 }
 
 .app-box{
@@ -7,6 +8,7 @@
   align-items: stretch;
   justify-content: center; 
   height: 100vh;
+  background-color: #f5f2ed;
 }
 .carousel-box {
   flex: 1; /* 自動伸展，佔據剩餘的空間 */
@@ -18,16 +20,16 @@
   
 }
 /* slide.js */
-.carousel-caption {
+/* .carousel-caption {
   position: absolute;
   bottom: 5%;
   left: 15%;
   transform: translateX(-50%);
   padding: 20px;
-  width: 100%;
-  text-align: center;
-  color: #FAF7CA; /* 文字顏色，可以自行調整 */
-}
+  width: 85%;
+  text-align: left;
+  color: #FAF7CA; 
+} */
 .slides{
   object-fit: contain;
   width: 100%;
@@ -49,9 +51,8 @@
   padding: 30px; 
   height: 100vh;
   width: 40%; 
-  background-color: rgba(248, 249, 250, 0.75); 
+  background-color: rgba(248, 249, 250, 0.85); 
   color: rgb(87,87,87);
-  font-family: 'Times New Roman', Times, serif;
 }
 .register-head{
   color:rgb(242, 64, 15);
