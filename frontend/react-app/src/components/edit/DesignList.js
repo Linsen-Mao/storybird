@@ -129,7 +129,7 @@ const DesignList = () => {
 
 
     return(        
-        <div className="container">
+        <div className="designList-container">
             <div className="createPage">
                     <div className="divContainer">
                       <div className="space"/>

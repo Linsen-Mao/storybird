@@ -1,7 +1,6 @@
 // WorkImages.js
 // 渲染作品圖片
 import React, { useRef, useState, useEffect } from 'react';
-import Image from './c5_image.js';
 import '../css/c4_workImages.css';
 
 const WorkImages = ({ imageData }) => {
@@ -9,11 +8,22 @@ const WorkImages = ({ imageData }) => {
   const [slideList, setSlideList] = useState([]);
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
 
+  // Design component
+  const Image = ({ id, image, caption }) => {
+    return (
+      <div className="image-container">
+        <img className="image" src={`http://localhost:4000/${image}`} alt={`Image ${id}`} />
+        {caption && <div className="caption">{caption}</div>}
+      </div>
+    );
+  };
+
   useEffect(() => {
     const formattedData = imageData.images.map((image) => ({
       id: image.id,
       slide: (
         <Image
+          key={image.id}
           id={image.id}
           image={image.imageFile}
           caption={image.caption}
