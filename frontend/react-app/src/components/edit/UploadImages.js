@@ -27,7 +27,7 @@ const UploadImages = () => {
 
     const navigate = useNavigate();
 
-    const uploadImages = () => {
+    const uploadImages = async () => {
 
         //send data to backend
         const data = selectedImages.map((src, index) => ({
@@ -35,34 +35,42 @@ const UploadImages = () => {
             imgSrc: src,
           }));
 
-          /*fetch('your-backend-url', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ images: imageListWithIds }), // Sending the array in JSON format
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              console.log('Response from backend:', data);
-            })
-            .catch((error) => {
-              console.error('Error:', error);
-            });*/
+          let url = 'http://localhost:4000/images' //??
 
+          try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json', // 告訴後端是json形式
+                    },
+                credentials: 'include',
+                body: JSON.stringify(data),
+            });
+            if(response.ok) {
+                console.log("images have been uploaded");
 
-        const confirmation = window.confirm("Images uploaded. Do you want to continue edit the text?");
-
-        if (confirmation) {
-          // Code to continue editing
-          console.log("Continue editing");
-          navigate("/editPage");
-
-
-        } else {
-          // Code to finish editing
-          console.log("Finish editing");
-          navigate("/");
+                // continue with text editing?
+                const confirmation = window.confirm("Images uploaded. Do you want to continue edit the text?");
+                
+                if (confirmation) {
+                  // Code to continue editing
+                  console.log("Continue editing");
+                  navigate("/editPage");
+                } else {
+                  // Code to finish editing
+                  console.log("Finish editing");
+                  navigate("/"); //to where???
+                }
+                
+            } else {
+                // Handle error response
+                alert("Something's wrong! Please try again.", response.status);
+                console.error('Request failed:', response.status);
+            }
+        } catch (error) {
+            // Handle fetch error
+            alert("Fetch error", response.status);
+            console.error('Error:', error);
         }
     }
 
