@@ -115,7 +115,7 @@ const CreateStory = () => {
       </div>
 
       <div className="inputDiv">
-        <input id="inputTitle" type="text" placeholder="title" />
+        <input id="inputTitle" type="text" placeholder="title (at most 20 letters)" />
         <input id="inputDescription" type="text" placeholder="description" />
         <select
           id="categorySelect"

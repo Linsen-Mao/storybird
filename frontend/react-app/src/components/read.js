@@ -63,11 +63,6 @@ const Read = () => {
     return (
       <div id="read" className="mt-5 p-5">
         <h2 className="featurette-heading text-center mb-4">{info.title}</h2>
-        <div className="d-flex justify-content-center mb-4">
-          <button type="button" className="btn btn-outline-secondary">
-            Create My Own Story
-          </button>
-        </div>
         <hr className="featurette-divider" />
         <div className="container mt-5 mb-5">
           <div className="row">
@@ -84,6 +79,9 @@ const Read = () => {
                   {info.category.name}: {info.category.description}
                 </p>
                 <p>Creator: {info.creator.username}</p>
+                <button type="button" className="btn btn-outline-secondary">
+                    Create My Own Story
+                </button>
               </div>
             </div>
           </div>
