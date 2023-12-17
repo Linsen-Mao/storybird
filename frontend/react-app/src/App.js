@@ -20,6 +20,7 @@ import Read from './components/read.js';
 import CreateStory from './components/edit/CreateStory.js'
 import UploadImages from './components/edit/UploadImages.js'
 import DesignList from './components/edit/DesignList.js';
+import EditPage from './components/edit/EditPage.js';
 
 
 //////////////////////////////////////////////
@@ -93,7 +94,7 @@ function App() {
           <Route path= "/editPage/:storyId" element={
           <div>
             <Navbar />
-            <DesignList />
+            <EditPage />
           </div>} /> 
           
       </Routes>  

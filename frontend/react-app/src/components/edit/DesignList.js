@@ -82,10 +82,6 @@ const DesignList = () => {
         slide: <Design 
                 key={element.id} 
                 id={element.id} 
-                /*sendDataToParent={handleDesignData}
-                ref={el => {
-                    designComponentsRef.current[1] = el; // Store Design component references
-                  }}*/
                 imageFile={element.imageFile}
                 caption={element.caption} 
                 fontFamily={element.style[0]} 
@@ -115,7 +111,7 @@ const DesignList = () => {
       const data = await response.json();
       console.log(data);
   
-      /*
+      
       if (data && Array.isArray(data.images)) {
         const slides = data.images.map((item) => {
           // Ensure all necessary properties are defined
@@ -158,7 +154,7 @@ const DesignList = () => {
       } else {
         console.log("No images found or data format is incorrect");
       }
-      */
+      
     } catch (error) {
       console.error("Error fetching images:", error);
     }

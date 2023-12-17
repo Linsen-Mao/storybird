@@ -2,21 +2,21 @@ body {
     background-color: #f5f2ed;
     height: 100vh;
     width: 100vw;
-    padding: 0px;
 }
 
 
 
 .designList-container {
     /*background-color: antiquewhite;*/
-    height: 100%;
-    width: 100%;
-    padding: 0px;
-    padding-top: 5%;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    height: 100vh;
+    width: 100vw;
+    padding: 100px 50px 0px 50px;
     }
 
 .createPage {
-    /*background-color: brown;*/
     display: flex;
     justify-content: center;
     height: 85%;
@@ -24,7 +24,6 @@ body {
 }
 
 .designPage {
-    background-color: pink;
     height: 100%;
     width: 100%;
 }
