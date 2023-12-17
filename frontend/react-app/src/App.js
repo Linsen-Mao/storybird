@@ -29,9 +29,10 @@ function App() {
   const [authUserName, setAuthUserName] = useState(null);
 
   const localID = localStorage.getItem('myKey') || null;
-
   const [authUserID, setAuthUserID] = useState(localID);
-  const [token, setToken] = useState(null);
+
+  const localToken = localStorage.getItem('mykey') || '';
+  const [token, setToken] = useState(localToken);
   useEffect(() => {
     Cookie.set('jwt',token, {expires: 7, path: '/'});
     console.log('COOKIE: ',document.cookie);

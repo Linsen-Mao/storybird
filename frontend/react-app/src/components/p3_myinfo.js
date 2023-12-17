@@ -5,7 +5,7 @@ import React, { useEffect,useState } from 'react';
 function MyInfo({userInfo}) {
     const {setAuthEmail, authEmail, setAuthUserName, setAuthUserID, authUserName, authUserID, token} = userInfo;
     console.log('ID:',authUserID);
-
+    
     useEffect(() => {
         const fetchData = async () => {
             
