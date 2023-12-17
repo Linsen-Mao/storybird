@@ -83,13 +83,13 @@ function App() {
             <CreateStory />
           </div>} />  
 
-          <Route path= "/uploadImages" element={
+          <Route path= "/uploadImages/:storyId" element={
           <div>
             <Navbar />
             <UploadImages />
           </div>} /> 
 
-          <Route path= "/editPage" element={
+          <Route path= "/editPage/:storyId" element={
           <div>
             <Navbar />
             <DesignList />

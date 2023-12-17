@@ -84,7 +84,7 @@ const Design = forwardRef((props, ref) => {
         // This function will be called when the component is first rendered
         const elementID = parseInt(id) - 1;
 
-        if(style!=null) {
+        /*if(style!=null) {
             const selectStyle= document.getElementsByClassName('selectStyle')[elementID];
 
             // Set the selected option by setting the value
@@ -155,7 +155,7 @@ const Design = forwardRef((props, ref) => {
 
             const imgRight = document.getElementsByClassName('inputFileRight')[elementID];
             imgRight.disabled = true;
-        }
+        }*/
       }, []);
 
 

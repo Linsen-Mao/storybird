@@ -5,10 +5,10 @@ import { useParams } from 'react-router-dom';
 
 
 
-const UploadImages = ( props ) => {
+const UploadImages = () => {
 
-    const { storyID } = props;
-    //const { storyID } = useParams();
+   
+    const { storyId } = useParams();
 
     //const [selectedImages, setSelectedImages] = useState([]);
     const [imgFiles, setImgFiles] = useState([]);
@@ -46,7 +46,7 @@ const UploadImages = ( props ) => {
             formData.append("imageFile", imgFiles[i]);
             formData.append("order", i);
 
-            let url = `http://localhost:4000/stories/${storyID}/images`; 
+            let url = `http://localhost:4000/stories/${storyId}/images`; 
             try {
                 const response = await fetch(url, {
                     method: "POST",
@@ -62,7 +62,7 @@ const UploadImages = ( props ) => {
             }
         }
 
-        navigate("/editPage");
+        navigate(`/editPage/${storyId}`);
     }
 
     return (

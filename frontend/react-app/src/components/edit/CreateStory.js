@@ -82,10 +82,14 @@ const CreateStory = () => {
       });
       if (response.ok) {
         const responseData = await response.json();
-        setStoryId(responseData.id);
+        const storyId = responseData.story.id;
+        /*console.log(responseData.story);
+        console.log(responseData.story.id);
+        setStoryId(responseData.story.id);
         console.log("story was created successfully!!");
+        console.log("storyId: ",storyId);*/
         // setp 2: go to upload images slide TODO
-        navigate("/uploadImages");
+        navigate(`/uploadImages/${storyId}`);
       } else {
         // Handle error response
         alert("Something's wrong! Please try again.", response.status);
@@ -132,10 +136,6 @@ const CreateStory = () => {
         </select>
         <button onClick={createNewStory}>Create</button>
       </div>
-
-      {/* Render DesignList if storyId is set */}
-      {storyId && <UploadImages storyID={storyId} />}
-      {storyId && <DesignList storyID={storyId} preview={false} />}
     </div>
   );
 };
