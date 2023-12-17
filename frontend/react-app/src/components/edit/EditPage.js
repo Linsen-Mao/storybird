@@ -1,12 +1,15 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import DesignPage from "./DesignPage";
-import './DesignList.css'
+import './EditPage.css'
 import { useParams } from 'react-router-dom';
 
 
-const EditPage = () => {
+const EditPage = (props) => {
 
     const { storyId } = useParams();
+    const { storyId: storyIdFromProps, preview } = props;
+
+    const resolvedStoryId = storyId || storyIdFromProps;
 
     const writer = true;
 
@@ -21,7 +24,7 @@ const EditPage = () => {
     const getInitialData = async() => {
         try {
             const response = await fetch(
-              `http://localhost:4000/stories/${storyId}/images`, {
+              `http://localhost:4000/stories/${resolvedStoryId}/images`, {
                 method: 'GET',
                 credentials: 'include'
               });
@@ -64,7 +67,7 @@ const EditPage = () => {
     
     useEffect(() => {
       getInitialData();
-    }, [storyId]);
+    }, [resolvedStoryId]);
     
 
     // Slide through slides 

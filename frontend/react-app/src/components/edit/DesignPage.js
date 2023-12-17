@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import './Design.css';
+import './DesignPage.css';
 
 const DesignPage = (props) => {
 

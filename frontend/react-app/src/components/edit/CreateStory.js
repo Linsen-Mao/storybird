@@ -1,8 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./CreateStory.css";
 import { useNavigate } from "react-router-dom";
-import DesignList from "./DesignList";
-import UploadImages from "./UploadImages";
 
 const CreateStory = () => {
   // upload image

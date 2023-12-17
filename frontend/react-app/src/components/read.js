@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import '../css/read.css';
-import DesignList from './edit/DesignList'; 
+import EditPage from './edit/EditPage';
 import Spinner from 'react-bootstrap/Spinner';
 
 const Read = () => {
@@ -69,7 +69,7 @@ const Read = () => {
           <div className="row">
             <div className="col-12 col-lg-8">
               {/* 直接将DesignList组件放在这里 */}
-              <DesignList preview={true} />
+              <EditPage storyId={storyID} preview={true} />
             </div>
             <div className="col-12 col-lg-4">
               <div id="workInfo" className="featurette">
