@@ -337,6 +337,7 @@ class StoryImageController {
     }
 
     if (!story.writerId) {
+      story.writerId = userId;
       await this.prisma.story.update({
         where: { id: parsedStoryId },
         data: { writerId: userId },
@@ -346,6 +347,7 @@ class StoryImageController {
         where: { storyId: parsedStoryId },
         data: { writerId: userId },
       });
+
     }
 
     if (story.writerId !== userId) {

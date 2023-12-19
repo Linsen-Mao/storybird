@@ -12,9 +12,9 @@ function AboutUs() {
     },
     {
       title: 'Frontend',
-      name: '王小明',
-      img: require('../img/monster03.png'),
-      description: '...'
+      name: '王语萱',
+      img: require('../img/ourteam/Alissa.jpg'),
+      description: 'TUM CS'
     },
     {
       title: 'Frontend',
