@@ -217,6 +217,9 @@ const DesignPage = (props) => {
         try {
             const response = await fetch(url, {
                 method: "POST",
+                headers: {
+                    'Content-Type': 'application/json', // 告訴後端是json形式
+                    },
                 credentials: "include",
                 body: json, // 发送FormData对象
             });
