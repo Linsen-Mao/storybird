@@ -40,7 +40,8 @@ const EditPage = (props) => {
                 pageId: i,
                 slide: <DesignPage 
                         key={element.id} 
-                        id={element.id} 
+                        imageId={element.id} 
+                        storyId={resolvedStoryId}
                         pageId={i}
                         imageFile={element.imageFile ? `http://localhost:4000/${element.imageFile}` : ''}
                         caption={element.caption || ''} 
@@ -62,9 +63,7 @@ const EditPage = (props) => {
             console.error("Error fetching images:", error);
         }
     }
-    
-    //actual code
-    
+        
     useEffect(() => {
       getInitialData();
     }, [resolvedStoryId]);
@@ -85,13 +84,13 @@ const EditPage = (props) => {
         }
     };
 
-    const addSlide = () => {
+    /*const addSlide = () => {
         const newID = slideList.length;
         const newSlide = 
             {pageId: newID, 
             slide: <DesignPage 
-                    key={newID} //??
-                    id={newID} //??
+                    key={newID} 
+                    id={newID} 
                     pageId={newID}
                     imageFile="https://uxwing.com/wp-content/themes/uxwing/download/video-photography-multimedia/upload-image-icon.png"
                     caption="" 
@@ -104,7 +103,7 @@ const EditPage = (props) => {
         const newSlideList = [...slideList, newSlide];
         setSlideList(newSlideList);
         setCurrentSlideIndex(newID);
-    }
+    }*/
 
 
     return(        
@@ -125,11 +124,8 @@ const EditPage = (props) => {
                     <div className="divContainer">
                       <div className="space"/>
                       <button className="slideBtn" onClick={showNextSlide}>&gt;</button>
-                      <div className="space">
-                       <button className="addSlideBtn" onClick={addSlide}>+</button>
-                      </div>
+                      <div className="space"/>
                     </div>
-                    
             </div>
 
             <div className="foot">

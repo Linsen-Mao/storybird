@@ -4,7 +4,7 @@ import './DesignPage.css';
 const DesignPage = (props) => {
 
     //editText = boolean, True->edit text/disable upload img, False->upload img/diable edit text
-    const { key, id, pageId, imageFile, caption, fontFamily, size, color, style, editText} = props; 
+    const { key, imageId, storyId, pageId, imageFile, caption, fontFamily, size, color, style, editText} = props; 
 
     const [selectedColor, setSelectedColor] = useState(color);
 
@@ -197,26 +197,45 @@ const DesignPage = (props) => {
 
 
 
-    const saveData = () => {
+    const saveData = async() => {
         const elementID = parseInt(pageId) 
         const selectStyle= document.getElementsByClassName('selectStyle')[elementID].value;
 
         // create data
         const data = {
-            "id": id, 
-            "imagefile": image,
-            "caption": captionValue,
-            "style": [selectedFontFamily, selectedSize, selectedColor, selectStyle]
+            "caption":captionValue
         }
-   
-        const jsonData = JSON.stringify(data)
-        console.log(jsonData);
-        //TODO: send data to backend
 
+        const json = JSON.stringify(data)
+
+        console.log("json: ", json);
+        console.log("storyId: ", storyId);
+        console.log("imageId: ", imageId);
+
+        //TODO: send data to backend
+        let url = `http://localhost:4000/stories/${storyId}/images/${imageId}/captions`;
+        try {
+            const response = await fetch(url, {
+                method: "POST",
+                credentials: "include",
+                body: json, // 发送FormData对象
+            });
+            const responseData = await response.json();
+            console.log(responseData);
+            /*if (response.ok) {
+                const responseData = await response.json();
+                console.log("responseData after sending caption from designPage\n", responseData);
+            } else {
+                // Handle error response
+                alert("page couldn't be saved. Error: ", response.status);
+                console.error("Request failed:", response.status);
+            }*/
+        } catch (error) {
+            console.error("Error:", error);
+        }
 
         const isSaved = document.getElementsByClassName('isSaved')[elementID];
         isSaved.style.backgroundColor = "rgb(128, 204, 207)";
-        return jsonData;
     }
 
 

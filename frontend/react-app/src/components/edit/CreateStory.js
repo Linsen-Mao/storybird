@@ -11,8 +11,6 @@ const CreateStory = () => {
     "https://t4.ftcdn.net/jpg/05/65/22/41/360_F_565224180_QNRiRQkf9Fw0dKRoZGwUknmmfk51SuSS.jpg"
   );
 
-  const [storyId, setStoryId] = useState(null); // State to store the story ID
-
   const handleImageClick = () => {
     inputRef.current.click();
   };
@@ -81,11 +79,6 @@ const CreateStory = () => {
       if (response.ok) {
         const responseData = await response.json();
         const storyId = responseData.story.id;
-        /*console.log(responseData.story);
-        console.log(responseData.story.id);
-        setStoryId(responseData.story.id);
-        console.log("story was created successfully!!");
-        console.log("storyId: ",storyId);*/
         // setp 2: go to upload images slide TODO
         navigate(`/uploadImages/${storyId}`);
       } else {

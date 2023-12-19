@@ -7,21 +7,13 @@ import { useParams } from 'react-router-dom';
 
 const UploadImages = () => {
 
-   
     const { storyId } = useParams();
-
-    //const [selectedImages, setSelectedImages] = useState([]);
     const [imgFiles, setImgFiles] = useState([]);
 
     const onSelectFile = (event) => {
         const selectedFiles = event.target.files;
         const selectedFilesArray = Array.from(selectedFiles);
 
-        /*const imagesArray = selectedFilesArray.map((file) => {
-        return URL.createObjectURL(file);
-        });
-
-        setSelectedImages((previousImages) => previousImages.concat(imagesArray));*/
         setImgFiles((previousImgFiles) => previousImgFiles.concat(selectedFilesArray));
 
         // FOR BUG IN CHROME
@@ -29,7 +21,6 @@ const UploadImages = () => {
     };
 
     function deleteHandler(image) {
-        //setSelectedImages(selectedImages.filter((e) => e !== image));
         setImgFiles(imgFiles.filter((e) => e !== image))
         URL.revokeObjectURL(image);
     }
@@ -37,9 +28,6 @@ const UploadImages = () => {
     const navigate = useNavigate();
 
     const uploadImages = async () => {
-
-        //console.log(selectedImages);
-        console.log(imgFiles);
 
         for (let i = 0; i < imgFiles.length; i++) {
             const formData = new FormData();
@@ -61,7 +49,6 @@ const UploadImages = () => {
                 console.error("Error:", error);
             }
         }
-
         navigate(`/editPage/${storyId}`);
     }
 
@@ -83,20 +70,6 @@ const UploadImages = () => {
             <input className="inputUploadImage" type="file" multiple />
 
             <div className="images">
-                {/*{selectedImages &&
-                selectedImages.map((image, index) => {
-                    return (
-                    <div key={image} className="image">
-                        <button onClick={() => deleteHandler(image)}>
-                        x
-                        </button>
-                        <img className="uploadedImg" src={image} alt="upload" />
-                        
-                        <p>{index + 1}</p>
-                    </div>
-                    );
-                })}*/}
-
                 {imgFiles &&
                 imgFiles.map((image, index) => {
                     return (
@@ -112,15 +85,12 @@ const UploadImages = () => {
                 })}
             </div>
 
-            {/*{selectedImages.length > 0 ? */}
             {imgFiles.length > 0 ?
                 (
                 <button
                     className="upload-btn"
                     onClick={uploadImages}
                 >
-                    {/*UPLOAD {selectedImages.length} IMAGE
-                    {selectedImages.length === 1 ? "" : "S"}*/}
                     UPLOAD {imgFiles.length} IMAGE
                     {imgFiles.length === 1 ? "" : "S"}
                 </button>    
