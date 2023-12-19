@@ -40,7 +40,7 @@ model StoryImage {
   imageFile String
   caption  String? // 初始可以为空，直到writer添加
   order    Int
-  style    Int[]
+  style    String[]
   story    Story  @relation(fields: [storyId], references: [id])
   writer   User?  @relation(name: "ImageWriter", fields: [writerId], references: [id])
 }
