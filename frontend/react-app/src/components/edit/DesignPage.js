@@ -196,14 +196,14 @@ const DesignPage = (props) => {
     };
 
 
-
     const saveData = async() => {
         const elementID = parseInt(pageId) 
-        const selectStyle= document.getElementsByClassName('selectStyle')[elementID].value;
+        const style= document.getElementsByClassName('selectStyle')[elementID].value;
 
         // create data
         const data = {
-            "caption":captionValue
+            "caption":captionValue,
+            "style":[selectedFontFamily, selectedSize, selectedColor, style]
         }
 
         const json = JSON.stringify(data)
