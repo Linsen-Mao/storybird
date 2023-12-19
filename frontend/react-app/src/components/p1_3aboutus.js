@@ -36,8 +36,8 @@ function AboutUs() {
     },
     {
       title: 'Backend',
-      name: '王小明',
-      img: require('../img/monster04.png'),
+      name: '蔡依旻',
+      img: require('../img/ourteam/tsai.jpg'),
       description: '...'
     }
   ];
