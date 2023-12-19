@@ -38,7 +38,7 @@ function AboutUs() {
       title: 'Backend',
       name: '蔡依旻',
       img: require('../img/ourteam/tsai.jpg'),
-      description: '...'
+      description: 'NTU STAT'
     }
   ];
   
