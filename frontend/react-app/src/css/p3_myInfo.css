@@ -3,14 +3,6 @@
     padding: 50px 0; /* 設定整個區塊的內間距 */
 }
 
-#myInfo .mb-4 {
-    transition: transform 0.3s ease-in-out;
-}
-
-#myInfo .mb-4:hover {
-    transform: scale(1.05);
-}
-
 #aboutMe img {
     object-fit: cover;
     display: block;

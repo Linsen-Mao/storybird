@@ -94,7 +94,13 @@ const CreateStory = () => {
   };
 
   return (
-    <div className="createStoryDiv">
+    <div className="createStoryDiv mt-5 p-5">
+      <h2 className="featurette-heading text-center mb-4">Create a new story</h2>
+      <hr className="featurette-divider" />
+      <div className="row justify-content-center">
+        {/* Step 1: Upload a Cover Image */}
+      <div className="col-md-5 mt-5 mt-sm-3">
+        <p className="lead text-center mb-4">Step 1: Upload a Cover Image</p>
       <div className="imageDiv">
         <img
           className="coverImg"
@@ -109,25 +115,38 @@ const CreateStory = () => {
           style={{ display: "none" }}
         />
       </div>
+      </div>
 
+      {/* Step 2: Fill in the Information */}
+      <div className="col-md-7 mt-5 mt-sm-3">
+        <p className="lead text-center mb-4">Step 2: Fill in the Information</p>
       <div className="inputDiv">
-        <input id="inputTitle" type="text" placeholder="title (at most 20 letters)" />
-        <input id="inputDescription" type="text" placeholder="description" />
+        <input id="inputTitle" type="text" className="form-control mb-3" placeholder="title (at most 20 letters)" />
+        <input id="inputDescription" type="text" className="form-control mb-3" placeholder="description" />
         <select
           id="categorySelect"
           value={selectedCategory}
+          className="form-select mb-3"
           onChange={(e) => handleCategoryChange(e.target.value)}
         >
-          <option value="All">ALL</option>
           {categories.map((category, index) => (
             <option key={index} value={category.id}>
               {category.name}
             </option>
           ))}
         </select>
-        <button onClick={createNewStory}>Create</button>
+        <button
+          type="button"
+          className="btn btn-outline-secondary"
+          onClick={createNewStory}
+        >
+          Create
+        </button>
+      </div>
+      </div>
       </div>
     </div>
+    
   );
 };
 export default CreateStory;

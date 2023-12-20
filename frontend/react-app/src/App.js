@@ -65,7 +65,7 @@ function App() {
               <ImageGallery />
             </div>} />
 
-          <Route path="/read/story/:storyID" element={
+          <Route path="/story/read/:storyID" element={
           <div>
             <Navbar />
             <Read />
@@ -90,7 +90,7 @@ function App() {
             <UploadImages />
           </div>} /> 
 
-          <Route path= "/editPage/:storyId" element={
+          <Route path= "/story/edit/:storyId" element={
           <div>
             <Navbar />
             <EditPage />

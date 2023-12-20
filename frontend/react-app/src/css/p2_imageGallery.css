@@ -7,13 +7,6 @@
   margin-top: 20px;
 }
 
-#imageGallery .mb-4 {
-  transition: transform 0.3s ease-in-out;
-}
-
-#imageGallery .mb-4:hover {
-  transform: scale(1.05);
-}
 
 #categorySelect {
   padding: 8px;

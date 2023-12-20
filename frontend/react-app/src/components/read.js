@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import '../css/read.css';
-import EditPage from './edit/EditPage';
 import Spinner from 'react-bootstrap/Spinner';
+import WorkImage from './c4_workImages.js';
 
 const Read = () => {
   const { storyID } = useParams();
@@ -46,6 +46,7 @@ const Read = () => {
       try {
         // 同時抓取故事資訊和圖片資料
         const [infoData, imagesData] = await Promise.all([fetchInfo(), fetchImages()]);
+        console.log(imagesData)
         setInfo(infoData);
         setImages(imagesData);
         setLoading(false);
@@ -63,13 +64,14 @@ const Read = () => {
   } else {
     return (
       <div id="read" className="mt-5 p-5">
-        <h2 className="featurette-heading text-center mb-4">{info.title}</h2>
+        <h1 className="featurette-heading text-center mb-4">{info.title}</h1>
         <hr className="featurette-divider" />
         <div className="container mt-5 mb-5">
           <div className="row">
             <div className="col-12 col-lg-8">
               {/* 直接将DesignList组件放在这里 */}
-              <EditPage storyId={storyID} preview={true} />
+              {/* <EditPage storyId={storyID} preview={true} /> */}
+              <WorkImage data={{id: storyID, images}} />
             </div>
             <div className="col-12 col-lg-4">
               <div id="workInfo" className="featurette">
@@ -80,7 +82,7 @@ const Read = () => {
                   {info.category.name}: {info.category.description}
                 </p>
                 <p>Creator: {info.creator.username}</p>
-                <button type="button" className="btn btn-outline-secondary">
+                <button type="button" className="btn btn-outline-secondary" onClick={() => window.location.href=`/story/edit/${storyID}`}>
                     Create My Own Story
                 </button>
               </div>

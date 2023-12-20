@@ -4,12 +4,12 @@ import './EditPage.css'
 import { useParams } from 'react-router-dom';
 
 
-const EditPage = (props) => {
+const EditPage = () => {
+    // const { storyId: storyIdFromProps } = props;  // storyId from props
+    const { storyId } = useParams();  // storyId from url
 
-    const { storyId } = useParams();
-    const { storyId: storyIdFromProps, preview } = props;
-
-    const resolvedStoryId = storyId || storyIdFromProps;
+    // const resolvedStoryId = storyId || storyIdFromProps;
+    const resolvedStoryId = storyId;
 
     const writer = true;
 
@@ -108,24 +108,26 @@ const EditPage = (props) => {
 
     return(        
         <div className="designList-container">
+            <h1 className="featurette-heading text-center mb-4">Create My Story</h1>
+            <hr className="featurette-divider" />
             <div className="createPage">
-                    <div className="divContainer">
-                      <div className="space"/>
-                      <button className="slideBtn" onClick={showPreviousSlide}>&lt;</button>
-                      <div className="space"/>
-                    </div>
+              <div className="divContainer">
+                <div className="space"/>
+                <button className="slideBtn" onClick={showPreviousSlide}>&lt;</button>
+                <div className="space"/>
+              </div>
 
-                    {slideList.map((slide, index) => (
-                        <div className="designPage" key={index} style={{ display: index === currentSlideIndex ? 'block' : 'none' }}>
-                        {slide.slide}
-                        </div>
-                    ))}
+              {slideList.map((slide, index) => (
+                  <div className="designPage" key={index} style={{ display: index === currentSlideIndex ? 'block' : 'none' }}>
+                  {slide.slide}
+                  </div>
+              ))}
 
-                    <div className="divContainer">
-                      <div className="space"/>
-                      <button className="slideBtn" onClick={showNextSlide}>&gt;</button>
-                      <div className="space"/>
-                    </div>
+              <div className="divContainer">
+                <div className="space"/>
+                <button className="slideBtn" onClick={showNextSlide}>&gt;</button>
+                <div className="space"/>
+              </div>
             </div>
 
             <div className="foot">

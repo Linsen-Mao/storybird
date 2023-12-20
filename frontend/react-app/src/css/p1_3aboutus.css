@@ -37,12 +37,5 @@
   color: #666; /* 調整內容文字顏色 */
 }
 
-#aboutUs .mb-4 {
-  transition: transform 0.3s ease-in-out;
-}
-
-#aboutUs .mb-4:hover {
-  transform: scale(1.05);
-}
 
 /* ... 其他樣式 ... */

@@ -54,6 +54,9 @@ const UploadImages = () => {
 
     return (
         <div className="container_uploadImages">
+            <h2 className="featurette-heading text-center mb-4">Upload Images</h2>
+            <hr className="featurette-divider" />
+            <p className="lead text-center mb-4">Step 3: Upload images for your story</p>
             <label className="labelAddImage">
                 + Add Images
                 <input

@@ -5,7 +5,7 @@ import Spinner from 'react-bootstrap/Spinner';
 import '../css/p2_imageGallery.css';
 
 const ImageGallery = () => {
-  const [selectedCategory, setSelectedCategory] = useState('All'); // 可以改為 const [selectedCategory, setSelectedCategory] = useState(0);
+  const [selectedCategory, setSelectedCategory] = useState('All'); // Default to 'All'
   const [stories, setStories] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -17,6 +17,7 @@ const ImageGallery = () => {
         credentials: 'include'
       });
       const data = await response.json();
+      console.log("data:\n",data);
       // Validate the response structure
       const stories = data && data.stories ? data.stories : [];
       return stories;
@@ -108,7 +109,7 @@ const ImageGallery = () => {
       <div className="row row-cols-2 row-cols-md-4 row-cols-lg-5 g-3">
         {filteredImages.map((img, imgIndex) => (
         <div key={imgIndex} className="col">
-          <Link to={`/read/story/${filteredIDs[imgIndex]}`} className="navbar-brand">
+          <Link to={`/story/read/${filteredIDs[imgIndex]}`} className="navbar-brand">
             <ImageCard
               src={`http://localhost:4000/${img}`}
               alt={filteredIDs[imgIndex]}

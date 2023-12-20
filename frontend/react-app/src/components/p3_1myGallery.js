@@ -63,7 +63,7 @@ function MyGallery({ userID }) {
                   <AddNewItemCard />
                 </Link>
                 {myImage.map((item) => (
-                  <Link to={`/editPage/${item.id}`} className="navbar-brand">
+                  <Link to={`/story/edit/${item.id}`} className="navbar-brand">
                     <ImageCard key={item.id} src={`http://localhost:4000/${item.coverImage}`} alt={item.alt} title={item.title}/>
                   </Link>
                 ))}
@@ -85,7 +85,7 @@ function MyGallery({ userID }) {
                   </div>
                 </Link>
                 {myWork.map((item) => (
-                  <Link to={`/read/story/${item.id}`} className="navbar-brand">
+                  <Link to={`/story/read/${item.id}`} className="navbar-brand">
                     <ImageCard key={item.id} src={`http://localhost:4000/${item.coverImage}`} alt={item.id} title={item.title} />
                   </Link>
                 ))}
