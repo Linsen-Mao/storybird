@@ -95,7 +95,7 @@ const CreateStory = () => {
 
   return (
     <div className="createStoryDiv mt-5 p-5">
-      <h2 className="featurette-heading text-center mb-4">Create a new story</h2>
+      <h1 className="featurette-heading text-center mb-4">Create a new story</h1>
       <hr className="featurette-divider" />
       <div className="row justify-content-center">
         {/* Step 1: Upload a Cover Image */}

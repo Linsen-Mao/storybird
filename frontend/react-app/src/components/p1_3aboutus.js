@@ -30,9 +30,9 @@ function AboutUs() {
     },
     {
       title: 'Backend',
-      name: '王小明',
-      img: require('../img/monster04.png'),
-      description: '...'
+      name: '茆林森',
+      img: require('../img/ourteam/Linsen.png'),
+      description: 'TUM CS'
     },
     {
       title: 'Backend',
