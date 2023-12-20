@@ -49,7 +49,7 @@ const UploadImages = () => {
                 console.error("Error:", error);
             }
         }
-        navigate(`/editPage/${storyId}`);
+        navigate(`story/edit/${storyId}`);
     }
 
     return (
