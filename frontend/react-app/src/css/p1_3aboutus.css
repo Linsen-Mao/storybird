@@ -12,12 +12,13 @@
   border: 1px solid #ddd; /* 添加邊框 */
   border-radius: 10px; /* 圓角 */
   overflow: hidden; /* 隱藏超出邊框的部分 */
+  height: 300px; /* 設定卡片高度 */
 }
 
 #aboutUs .card img {
   object-fit: cover;
   width: 100%;
-  height: 100%;
+  height: 50%;
   transition: transform 0.3s ease-in-out;
 }
 
