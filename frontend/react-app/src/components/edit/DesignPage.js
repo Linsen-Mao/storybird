@@ -241,12 +241,13 @@ const DesignPage = (props) => {
         isSaved.style.backgroundColor = "rgb(128, 204, 207)";
     }
 
+    // 若editText為false，則不顯示style選項
+    const settingsDisplayStyle = { display: editText ? "flex" : "none" };
 
     return(
         
         <div className="containerDesign">
-
-            <div className="style">
+            <div className="style" style={settingsDisplayStyle}>
 
                 <select className="selectStyle" onChange={handleStyleChange}>
                     <option selected disabled>style</option>
