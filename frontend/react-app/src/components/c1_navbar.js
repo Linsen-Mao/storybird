@@ -2,11 +2,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import '../css/c1_navbar.css';
-import Logo from '../img/bottle_aquarium_denkyu.png';
-import C1 from '../img/monster01.png';
-import C2 from '../img/monster02.png';
-import C3 from '../img/monster06.png';
-import C4 from '../img/monster05.png';
+import Logo from '../img/monster01.png';
+import C1 from '../img/monster02.png';
+import C2 from '../img/monster05.png';
+import C3 from '../img/monster07.png';
+import C4 from '../img/monster11.png';
 import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
