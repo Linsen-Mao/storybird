@@ -37,6 +37,7 @@ const Register = ({data}) => {
             console.log(responData);
             if (responData.message === 'User created successfully'){
                 data.setTheme('signin');
+                alert("Register successful! Please sign in after register.");
                 navigate('/');
             }
             else{WrongCondition(true);}
