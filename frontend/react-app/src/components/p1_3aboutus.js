@@ -25,7 +25,7 @@ function AboutUs() {
     {
       title: 'Frontend',
       name: '張芸菲',
-      img: require('../img/monster03.png'),
+      img: require('../img/ourteam/yun.jpg'),
       description: 'NTU CHEM'
     },
     {
