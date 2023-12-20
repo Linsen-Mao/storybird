@@ -38,7 +38,7 @@ const Navbar = () => {
             <div className="container">
                 <Link to={'/home'} className="navbar-brand">
                     <img src={Logo} alt="Logo" width="30" height="30" className="d-inline-block align-top" />
-                    {' '}Story Fish
+                    {' '}Story MONSTER
                 </Link>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive"
                     aria-expanded="false" aria-label="Toggle navigation">
